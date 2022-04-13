@@ -3,6 +3,9 @@
 #include <string.h>
 #include "bi_insertion_sort.h"
 
+#define VERSION "1.0.0"
+#define PROGRAM "/bin/bi_insertion_sort_main"
+
 typedef struct _record {
     int id;
     char *field1;
@@ -42,7 +45,6 @@ static  void free_array(Array *array) {
 }
 
 static void load_array(const char *file_name, Array *array) {
-  // char buffer[BUFFER_SIZE];
   FILE *fp;
   char *line = NULL;
   size_t len = 0;
@@ -62,7 +64,7 @@ static void load_array(const char *file_name, Array *array) {
     char *field2_in_read_line_p = strtok(NULL, ",");
     char *field3_in_read_line_p = strtok(NULL, ",");
 
-    //printf("%s, %s, %s, %s", id_in_read_line_p, field1_in_read_line_p, field2_in_read_line_p, field3_in_read_line_p);
+    
     
     record_p->id = atoi(id_in_read_line_p);     //carico nel record l'ID
     record_p->field2 = atoi(field2_in_read_line_p);     //carico nel record il secondo campo
@@ -76,7 +78,7 @@ static void load_array(const char *file_name, Array *array) {
     }
     strcpy(record_p->field1, field1_in_read_line_p);
 
-    //printf("%d, %d, %f, %s\n", record_p->id, record_p->field2, record_p->field3, record_p->field1);
+    
 
     array_insert(array, (void*)record_p);      //DA SCRIVERE, VEDERE DAL PROF DRAGO da qui in poi 
   }
@@ -88,7 +90,7 @@ static void load_array(const char *file_name, Array *array) {
 static void test_with_comparison_function(const char *file_name, int (*compare)(void*, void*)) {
   Array *array = binary_insertion_create(compare);
   load_array(file_name, array);
-  //bi_insertion_sort_onarray(array, compare); //da implementare
+  // array = bi_insertion_sort(array); /*da implementare*/
   print_array(array);
   free_array(array);
 }
@@ -105,9 +107,17 @@ static int compare_elements(void *r1_p, void *r2_p) {
   return rand()%1; //non ha senso, solo momentaneo
 }
 
+void Usage(){
+  fprintf(stderr, "\nUSAGE\t: \t%s ", PROGRAM);
+  fprintf(stderr, "insert csv pathname\n");
+  fprintf(stderr, "\nLinux-%s\n", VERSION);
+  //fprintf(stderr, " text  File to use as testing.\n");
+  exit(1);
+}
+
 int main(int argc, char const *argv[]) {
   if (argc < 2) {
-    printf("ELEMENTI INSUFF");
+    Usage();
     exit(EXIT_FAILURE);
   }
   test_with_comparison_function(argv[1], compare_elements);

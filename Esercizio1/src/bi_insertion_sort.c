@@ -4,6 +4,7 @@
 
 #define INITIAL_CAPACITY 2
 
+
 struct _Array {
   void **array;
   unsigned long size;
@@ -43,6 +44,12 @@ Array *binary_insertion_create(int (*precedes) (void *a, void *b)){
         return NULL;
     }
 
+    array->array = (void**)malloc(INITIAL_CAPACITY * sizeof(void*));
+    if (array->array == NULL) {
+      fprintf(stderr, "array_create: unable to allocate memory for the internal array");
+      return NULL;
+    }
+
     array->size = 0;   
     array->precedes = precedes;
     array->array_capacity = INITIAL_CAPACITY;
@@ -68,8 +75,7 @@ Array *array_insert(Array *array, void *element) {
       return NULL;
     }
   }
-  printf("%ld", array->size);
-  array->array[array->size] = element;
+  array->array[array->size] = element; //segfault
   array->size++;
   return array;
 }

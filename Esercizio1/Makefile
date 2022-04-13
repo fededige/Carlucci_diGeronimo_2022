@@ -18,3 +18,6 @@ bin/bi_insertion_sort_main: build/bi_insertion_sort.o build/bi_insertion_sort_ma
 clean:
 	$(RM) build/*
 	$(RM) bin/*
+
+run: bin/bi_insertion_sort_main
+	./bin/bi_insertion_sort_main /home/emanuele/Documenti/recordmini.csv

@@ -5,3 +5,4 @@ unsigned long array_size(Array *array); //return array size
 void ordered_array_free_memory(Array *array);
 void *array_get(Array *array, unsigned long i);
 Array *array_insert(Array *array, void *element);
+
