@@ -5,6 +5,10 @@
 #define INITIAL_CAPACITY 2
 
 
+static unsigned long bi_get_index(Array *array, unsigned long a, unsigned long b, void *key);
+static void insert_element(Array *array, void *element, unsigned long index, unsigned long b);
+
+
 struct _Array {
   void **array;
   unsigned long size;
@@ -87,4 +91,39 @@ void ordered_array_free_memory(Array *array) {
   }
   free(array->array);
   free(array);
+}
+Array *bi_insertion_sort(Array *array){
+  unsigned long i, index = 0;
+  for(i = 1; i < array->size; i++){
+    void *key = array->array[i];
+    index = bi_get_index(array, 0, i - 1, key);  //get index of
+    insert_element(array, key, index,i);
+  }
+  return array;
+}
+
+static unsigned long bi_get_index(Array *array, unsigned long a, unsigned long b, void *key){
+  if(a == b){
+    if(array->precedes(array->array[a], key) == 1){
+      return a;
+    }
+    return b + 1;
+  }
+  else{
+    unsigned long m = (b + a) / 2;
+    if(array->precedes(array->array[m], key) == 1){
+      return bi_get_index(array, a, m, key);
+    }
+    else if(array->precedes(array->array[m], key) == -1){
+      return bi_get_index(array, m + 1, b, key);
+    }
+    else
+      return m;
+  }
+}
+
+static void insert_element(Array *array, void *element, unsigned long index, unsigned long b){
+  for (unsigned long i = b; i > index; --i)
+    array->array[i] = array->array[i-1];
+  array->array[index] = element;
 }

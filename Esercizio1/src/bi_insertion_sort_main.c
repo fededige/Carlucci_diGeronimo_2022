@@ -90,7 +90,7 @@ static void load_array(const char *file_name, Array *array) {
 static void test_with_comparison_function(const char *file_name, int (*compare)(void*, void*)) {
   Array *array = binary_insertion_create(compare);
   load_array(file_name, array);
-  // array = bi_insertion_sort(array); /*da implementare*/
+  array = bi_insertion_sort(array); /*da implementare*/
   print_array(array);
   free_array(array);
 }
@@ -104,7 +104,15 @@ static int compare_elements(void *r1_p, void *r2_p) {
     fprintf(stderr, "precedes_string: the second parameter is a null pointer");
     exit(EXIT_FAILURE);
   }
-  return rand()%1; //non ha senso, solo momentaneo
+  Record *rec1_p = (Record*)r1_p;
+  Record *rec2_p = (Record*)r2_p;
+  if(rec1_p->field2< rec2_p->field2){
+    return -1;
+  }
+  else if(rec1_p->field2> rec2_p->field2){
+    return 1;
+  }
+  else return 0;
 }
 
 void Usage(){
