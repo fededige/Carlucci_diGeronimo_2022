@@ -20,4 +20,4 @@ clean:
 	$(RM) bin/*
 
 run: bin/bi_insertion_sort_main
-	./bin/bi_insertion_sort_main /home/emanuele/Documenti/records.csv
+	./bin/bi_insertion_sort_main /home/emanuele/Documenti/recordminii.csv

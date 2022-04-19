@@ -6,7 +6,7 @@
 #define VERSION "1.0.0"
 #define PROGRAM "/bin/bi_insertion_sort_main"
 
-typedef struct _record {
+typedef struct _record { 
     int id;
     char *field1;
     int field2;
@@ -90,7 +90,8 @@ static void load_array(const char *file_name, Array *array) {
 static void test_with_comparison_function(const char *file_name, int (*compare)(void*, void*)) {
   Array *array = binary_insertion_create(compare);
   load_array(file_name, array);
-  array = bi_insertion_sort(array); /*da implementare*/
+  /*array = bi_insertion_sort(array); binary insertion sort*/ 
+  array = rand_quicksort(array); /*quicksort con scelta del pivot random*/
   print_array(array);
   free_array(array);
 }
@@ -106,10 +107,10 @@ static int compare_elements(void *r1_p, void *r2_p) {
   }
   Record *rec1_p = (Record*)r1_p;
   Record *rec2_p = (Record*)r2_p;
-  if(rec1_p->field2< rec2_p->field2){
+  if(rec1_p->id < rec2_p->id){
     return -1;
   }
-  else if(rec1_p->field2> rec2_p->field2){
+  else if(rec1_p->id > rec2_p->id){
     return 1;
   }
   else return 0;
