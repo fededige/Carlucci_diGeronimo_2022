@@ -13,8 +13,8 @@ typedef struct _record {
     double field3;
 } Record;
 
-FILE *open_file(const char *filename){
-  FILE *file = fopen(filename, "r");
+FILE *open_file(const char *filename, char *m){
+  FILE *file = fopen(filename, m);
   if (file == NULL) {
     printf("File not found: %s\n", filename);
     exit(1);
@@ -22,16 +22,17 @@ FILE *open_file(const char *filename){
   return file;
 }
 
-static  void print_array(Array *array) {
+static  void print_array(Array *array, FILE *out) {
   unsigned long size = array_size(array);
 
   Record *array_element;
-  printf("\nARRAY OF RECORDS\n");
-
+  
   for (unsigned long i = 0; i < size; ++i) {
     array_element = (Record*)array_get(array, i);
-    printf("%d, %s, %i, %f\n", array_element->id, array_element->field1, array_element->field2, array_element->field3);
+    fprintf(out, "%d, %s, %i, %f\n", array_element->id, array_element->field1, array_element->field2, array_element->field3);
   }
+  printf("\nData written\n");
+  fclose(out);
 }
 
 static  void free_array(Array *array) {
@@ -49,7 +50,7 @@ static void load_array(const char *file_name, Array *array) {
   char *line = NULL;
   size_t len = 0;
 
-  fp = open_file(file_name);
+  fp = open_file(file_name, "r");
 
 
   while (getline(&line, &len, fp) != -1) {
@@ -87,12 +88,15 @@ static void load_array(const char *file_name, Array *array) {
   printf("\nData loaded\n");
 }
 
-static void test_with_comparison_function(const char *file_name, int (*compare)(void*, void*)) {
+static void test_with_comparison_function(const char *file_name, const char *file_name_out, int (*compare)(void*, void*)) {
+  FILE *out = open_file(file_name_out, "w"); 
+  /*If a file with the same name already exists its contents 
+  are erased and the file is treated as an empty new file.*/
   Array *array = binary_insertion_create(compare);
   load_array(file_name, array);
   /*array = bi_insertion_sort(array); binary insertion sort*/ 
   array = rand_quicksort(array); /*quicksort con scelta del pivot random*/
-  print_array(array);
+  print_array(array, out);
   free_array(array);
 }
 
@@ -107,10 +111,10 @@ static int compare_elements(void *r1_p, void *r2_p) {
   }
   Record *rec1_p = (Record*)r1_p;
   Record *rec2_p = (Record*)r2_p;
-  if(rec1_p->id < rec2_p->id){
+  if(rec1_p->field3 < rec2_p->field3){
     return -1;
   }
-  else if(rec1_p->id > rec2_p->id){
+  else if(rec1_p->field3 > rec2_p->field3){
     return 1;
   }
   else return 0;
@@ -125,11 +129,11 @@ void Usage(){
 }
 
 int main(int argc, char const *argv[]) {
-  if (argc < 2) {
+  if (argc < 3) {
     Usage();
     exit(EXIT_FAILURE);
   }
-  test_with_comparison_function(argv[1], compare_elements);
+  test_with_comparison_function(argv[1], argv[2], compare_elements);
 
   return EXIT_SUCCESS;
 }
