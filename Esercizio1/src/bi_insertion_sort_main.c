@@ -3,7 +3,6 @@
 #include <string.h>
 #include "bi_insertion_sort.h"
 
-#define VERSION "1.0.0"
 #define PROGRAM "/bin/bi_insertion_sort_main"
 
 typedef struct _record { 
@@ -12,6 +11,17 @@ typedef struct _record {
     int field2;
     double field3;
 } Record;
+
+void Usage(){
+  fprintf(stderr, "\nUSAGE\t: \t%s ", PROGRAM);
+  fprintf(stderr, "\"insert input csv pathname\" ");
+  fprintf(stderr, "\"insert output csv pathname\" ");
+  fprintf(stderr, "insert field to sort [1 | 2 | 3] ");
+  fprintf(stderr, "insert algo name [bi_insertionsort | quicksort]\n");
+  
+  //fprintf(stderr, " text  File to use as testing.\n");
+  exit(1);
+}
 
 FILE *open_file(const char *filename, char *m){
   FILE *file = fopen(filename, m);
@@ -88,20 +98,29 @@ static void load_array(const char *file_name, Array *array) {
   printf("\nData loaded\n");
 }
 
-static void test_with_comparison_function(const char *file_name, const char *file_name_out, int (*compare)(void*, void*)) {
+static void test_with_comparison_function(const char *file_name, const char *file_name_out, const char *mode, int (*compare)(void*, void*)) {
   FILE *out = open_file(file_name_out, "w"); 
   /*If a file with the same name already exists its contents 
   are erased and the file is treated as an empty new file.*/
   Array *array = binary_insertion_create(compare);
   load_array(file_name, array);
-  /*array = bi_insertion_sort(array); binary insertion sort*/ 
-  array = rand_quicksort(array); /*quicksort con scelta del pivot random*/
+
+  if(strcmp(mode, "quicksort") == 0){
+    array = rand_quicksort(array);
+  }
+  else if(strcmp(mode, "bi_insertionsort") == 0){
+    array = bi_insertion_sort(array);
+  }else{
+    Usage();
+    exit(EXIT_FAILURE);
+  } 
+  
   printf("array sorted");
   print_array(array, out);
   free_array(array);
 }
 
-static int compare_elements(void *r1_p, void *r2_p) {
+static int compare_field3(void *r1_p, void *r2_p) {
   if (r1_p == NULL) {
     fprintf(stderr, "precedes_string: the first parameter is a null pointer");
     exit(EXIT_FAILURE);
@@ -121,20 +140,67 @@ static int compare_elements(void *r1_p, void *r2_p) {
   else return 0;
 }
 
-void Usage(){
-  fprintf(stderr, "\nUSAGE\t: \t%s ", PROGRAM);
-  fprintf(stderr, "insert csv pathname\n");
-  fprintf(stderr, "\nLinux-%s\n", VERSION);
-  //fprintf(stderr, " text  File to use as testing.\n");
-  exit(1);
+static int compare_field2(void *r1_p, void *r2_p) {
+  if (r1_p == NULL) {
+    fprintf(stderr, "precedes_string: the first parameter is a null pointer");
+    exit(EXIT_FAILURE);
+  }
+  if (r2_p == NULL) {
+    fprintf(stderr, "precedes_string: the second parameter is a null pointer");
+    exit(EXIT_FAILURE);
+  }
+  Record *rec1_p = (Record*)r1_p;
+  Record *rec2_p = (Record*)r2_p;
+  if(rec1_p->field2 < rec2_p->field2){
+    return -1;
+  }
+  else if(rec1_p->field2 > rec2_p->field2){
+    return 1;
+  }
+  else return 0;
+}
+
+static int compare_field1(void *r1_p, void *r2_p) {
+  int res;
+  if (r1_p == NULL) {
+    fprintf(stderr, "precedes_string: the first parameter is a null pointer");
+    exit(EXIT_FAILURE);
+  }
+  if (r2_p == NULL) {
+    fprintf(stderr, "precedes_string: the second parameter is a null pointer");
+    exit(EXIT_FAILURE);
+  }
+  Record *rec1_p = (Record*)r1_p;
+  Record *rec2_p = (Record*)r2_p;
+  res = strcmp(rec1_p->field1, rec2_p->field1);
+  if(res < 0){
+    return -1;
+  }
+  else if(res > 0){
+    return 1;
+  }
+  else return 0;
 }
 
 int main(int argc, char const *argv[]) {
-  if (argc < 3) {
+  if (argc < 5) {
     Usage();
     exit(EXIT_FAILURE);
   }
-  test_with_comparison_function(argv[1], argv[2], compare_elements);
+  switch(atoi(argv[3])){
+    case 1:
+      test_with_comparison_function(argv[1], argv[2], argv[4], compare_field1);
+      break;
+    case 2:
+      test_with_comparison_function(argv[1], argv[2], argv[4], compare_field2);
+      break;
+    case 3:
+      test_with_comparison_function(argv[1], argv[2], argv[4], compare_field3);
+      break;
+    default:
+      Usage();
+      exit(EXIT_FAILURE);
+  }
 
   return EXIT_SUCCESS;
 }

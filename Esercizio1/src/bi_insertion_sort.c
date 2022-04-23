@@ -13,7 +13,7 @@ static void insert_element(Array *array, void *element, unsigned long index, uns
 static Array *Wrand_quicksort(Array *array, long p, long r);
 static long rand_partition(Array *array, long p, long r);
 static Array *swap_val(Array *array, long a, long b);
-static int conta=0;
+/*static int conta=0;*/
 struct _Array {
   void **array;
   unsigned long size;
