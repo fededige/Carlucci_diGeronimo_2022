@@ -96,6 +96,7 @@ static void test_with_comparison_function(const char *file_name, const char *fil
   load_array(file_name, array);
   /*array = bi_insertion_sort(array); binary insertion sort*/ 
   array = rand_quicksort(array); /*quicksort con scelta del pivot random*/
+  printf("array sorted");
   print_array(array, out);
   free_array(array);
 }

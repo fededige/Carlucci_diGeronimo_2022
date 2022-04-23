@@ -135,7 +135,6 @@ static void insert_element(Array *array, void *element, unsigned long index, uns
 
 Array *rand_quicksort(Array *array){
   return Wrand_quicksort(array, 0, (long) array->size-1);
-  printf("Data sorted");
 }
 
 static Array *Wrand_quicksort(Array *array, long p, long r){
