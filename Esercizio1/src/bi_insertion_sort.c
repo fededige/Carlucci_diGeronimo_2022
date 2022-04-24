@@ -49,7 +49,7 @@ Array *binary_insertion_create(int (*precedes) (void *a, void *b)){
     Array *array = (Array*)malloc(sizeof(Array));
 
     if (array == NULL) {
-        fprintf(stderr, "binary_insertion_create: unable to allocate memory for the ordered array");
+        fprintf(stderr, "binary_insertion_create: unable to allocate memory for the array");
         return NULL;
     }
 
@@ -63,6 +63,13 @@ Array *binary_insertion_create(int (*precedes) (void *a, void *b)){
     array->precedes = precedes;
     array->array_capacity = INITIAL_CAPACITY;
     return array;
+}
+
+int array_is_empty(Array *array) {
+  if (array == NULL) {
+    return 1;
+  }
+  return array->size == 0;
 }
 
 
@@ -89,9 +96,9 @@ Array *array_insert(Array *array, void *element) {
   return array;
 }
 
-void ordered_array_free_memory(Array *array) {
+void array_free_memory(Array *array) {
   if (array == NULL) {
-    fprintf(stderr, "array_free_memory: ordered_array parameter cannot be NULL");
+    fprintf(stderr, "array_free_memory: array parameter cannot be NULL");
     return;
   }
   free(array->array);

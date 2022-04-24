@@ -52,7 +52,7 @@ static  void free_array(Array *array) {
     free(array_element->field1);
     free(array_element);
   }
-  ordered_array_free_memory(array);
+  array_free_memory(array);
 }
 
 static void load_array(const char *file_name, Array *array) {
