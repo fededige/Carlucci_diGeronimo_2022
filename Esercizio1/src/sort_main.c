@@ -114,6 +114,7 @@ static void test_with_comparison_function(const char *file_name, const char *fil
     array = bi_insertion_sort(array);
   }else{
     Usage();
+    free_array(array);
     exit(EXIT_FAILURE);
   } 
   
