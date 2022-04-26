@@ -28,4 +28,4 @@ clean:
 	$(RM) bin/*
 
 run: bin/bi_insertion_sort_main
-	./bin/bi_insertion_sort_main /home/emanuele/Documenti/recordmini_2.csv /home/emanuele/Documenti/out.csv 3 quicksort
+	./bin/bi_insertion_sort_main "/home/emanuele/Documenti/recordmini_piccolo.csv" "/home/emanuele/Documenti/out.csv" "3" "std_quicksort"

@@ -5,6 +5,8 @@
 
 #define INITIAL_CAPACITY 2
 
+int choose_random_pivot = 0;
+
 /*METODI STATICI*/
 
 static unsigned long bi_get_index(Array *array, unsigned long a, unsigned long b, void *key);
@@ -140,45 +142,47 @@ static void insert_element(Array *array, void *element, unsigned long index, uns
   array->array[index] = element;
 }
 
-Array *rand_quicksort(Array *array){
+Array *rand_quicksort(Array *array, int mode){
+  if(mode == 0){
+    choose_random_pivot = 0;
+  }else if(mode == 1){
+    choose_random_pivot = 1;
+  }else{
+    return NULL;
+  }
+
   return Wrand_quicksort(array, 0, (long) array->size-1);
 }
 
 static Array *Wrand_quicksort(Array *array, long p, long r){
   long q;
-  if(r > 0){
+  if(r - p > 1){
     q = rand_partition(array, p, r);
-    if(q > 1){
+    /*printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);*/
+    if(q > p){/*q > 1*/
       array = Wrand_quicksort(array, p, q - 1);
     }
     if(q < r){
       array = Wrand_quicksort(array, q + 1, r);
     }
+    /*printf("DOPO: p: %lu, q: %lu, r: %lu \n", p, q, r);*/
   }
   return array;
 }
 
-/*static Array *Wrand_quicksort(Array *array, long p, long r){
-  long q;
-  if(p < r){
-    q = rand_partition(array, p, r);
-    array = Wrand_quicksort(array, p, q - 1);
-    array = Wrand_quicksort(array, q + 1, r);
-  }
-  return array;
-}*/
-
 static long rand_partition(Array *array, long p, long r){
-  long rand_pos, i = p + 1, j = r;
-  long int seed = time(NULL);
-  srand((unsigned int) seed);
-  if(p >= r){
-    return j;
+  long i = p + 1, j = r;
+  if(choose_random_pivot == 0){
+    long rand_pivot;
+    long int seed = time(NULL);
+    srand((unsigned int) seed);
+    if(p >= r){ /*r - p <= 1*/
+      return j;
+    }
+    rand_pivot = (long)rand() % (r-p+1) + p;
+    array = swap_val(array, rand_pivot, p); /*cambiato*/
   }
-  rand_pos = (long)rand() % (r-p+1) + p;
-  /*printf("RANDZ: %li \n",rand_pos);*/
-  array = swap_val(array, rand_pos, p); /*cambiato*/
-  
+
   while(i <= j){
     if(array->precedes(array->array[i], array->array[p]) == -1 || array->precedes(array->array[i], array->array[p]) == 0){//A[i] <= A[p] /*cambiato*/
       i++;
@@ -197,37 +201,6 @@ static long rand_partition(Array *array, long p, long r){
   array = swap_val(array, p, j); /*cambiato*/
   return j;
 }
-
-/*static long rand_partition(Array *array, long p, long r){
-  long rand_pos, i = 0, j;
-  long int seed = time(NULL);
-  srand((unsigned int) seed);
-  rand_pos = (long)rand()% (r-p+1) + p;
-  printf("RANDZ: %li \n",rand_pos);
-  //x = array->array[rand_pos];
-  array = swap_val(array, rand_pos, r);
-  
-  if(array == NULL){
-    fprintf(stderr, "errore in swap");
-  }
-  
-  i = p - 1;
-  for(j = p; j < r - 1; j++){
-    if(array->precedes(array->array[j], array->array[r]) == -1 || array->precedes(array->array[j], array->array[r]) == 0){ //A[j] <= x //array->array[r]
-      printf("entro qwer\n");
-      i = i + 1;
-      array = swap_val(array, i, j);
-      if(array == NULL){
-        fprintf(stderr, "errore in swap");
-      }
-    }
-    array = swap_val(array, i + 1, r);
-    if(array == NULL){
-      fprintf(stderr, "errore in swap");
-    }
-  }
-  return i + 1;
-}*/
 
 static Array *swap_val(Array *array,  long a,  long b){
   if(array == NULL)

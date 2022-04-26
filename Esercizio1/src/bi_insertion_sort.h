@@ -6,5 +6,5 @@ void array_free_memory(Array *array);
 void *array_get(Array *array, unsigned long i);
 Array *array_insert(Array *array, void *element);
 Array *bi_insertion_sort(Array *array);
-Array *rand_quicksort(Array *array);
+Array *rand_quicksort(Array *array, int mode);
 int array_is_empty(Array *array);
