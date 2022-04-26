@@ -156,16 +156,16 @@ Array *quicksort(Array *array, int mode){
 
 static Array *Wquicksort(Array *array, long p, long r){
   long q;
-  if(r - p > 1){
+  if(r - p >= 1){
     q = partition(array, p, r);
-    /*printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);*/
+    printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);
     if(q > p){/*q > 1*/
       array = Wquicksort(array, p, q - 1);
     }
     if(q < r){
       array = Wquicksort(array, q + 1, r);
     }
-    /*printf("DOPO: p: %lu, q: %lu, r: %lu \n", p, q, r);*/
+    printf("DOPO: p: %lu, q: %lu, r: %lu \n", p, q, r);
   }
   return array;
 }
@@ -176,9 +176,9 @@ static long partition(Array *array, long p, long r){
     long rand_pivot;
     long int seed = time(NULL);
     srand((unsigned int) seed);
-    if(p >= r){ /*r - p <= 1*/
+    /*if(p >= r){ r - p <= 1
       return j;
-    }
+    }*/
     rand_pivot = (long)rand() % (r-p+1) + p;
     array = swap_val(array, rand_pivot, p); /*cambiato*/
   }
