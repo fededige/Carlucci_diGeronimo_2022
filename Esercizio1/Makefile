@@ -2,10 +2,10 @@ CC = gcc
 CFLAGS = -g -O1 -Wall -Wextra -Wpedantic -Wconversion
 COMMON_DEPS = src/*.h Makefile
 
-all: bin/bi_insertion_sort_main bin/bi_insertion_sort_tests
+all: bin/sort_main bin/sorting_lib_tests
 
-tests: bin/bi_insertion_sort_tests
-	bin/bi_insertion_sort_tests
+tests: bin/sorting_lib_tests
+	bin/sorting_lib_tests
 
 create_folder:
 	mkdir -p build
@@ -17,15 +17,15 @@ build/%.o: src/%.c $(COMMON_DEPS)
 lib/%.o: src/%.c $(COMMON_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bin/bi_insertion_sort_main: build/bi_insertion_sort.o build/bi_insertion_sort_main.o $(COMMON_DEPS)
-	$(CC) -o bin/bi_insertion_sort_main build/bi_insertion_sort.o build/bi_insertion_sort_main.o
+bin/sort_main: build/sorting_lib.o build/sort_main.o $(COMMON_DEPS)
+	$(CC) -o bin/sort_main build/sorting_lib.o build/sort_main.o
 
-bin/bi_insertion_sort_tests: build/bi_insertion_sort_tests.o build/bi_insertion_sort.o lib/unity.o $(COMMON_DEPS)
-	$(CC) -o bin/bi_insertion_sort_tests build/bi_insertion_sort_tests.o build/bi_insertion_sort.o lib/unity.o
+bin/sorting_lib_tests: build/sorting_lib_tests.o build/sorting_lib.o lib/unity.o $(COMMON_DEPS)
+	$(CC) -o bin/sorting_lib_tests build/sorting_lib_tests.o build/sorting_lib.o lib/unity.o
 
 clean:
 	$(RM) build/*
 	$(RM) bin/*
 
-run: bin/bi_insertion_sort_main
-	./bin/bi_insertion_sort_main "/home/emanuele/Documenti/recordmini_piccolo.csv" "/home/emanuele/Documenti/out.csv" "3" "std_quicksort"
+run: bin/sort_main
+	./bin/sort_main "/home/emanuele/Documenti/recordmini_piccolo.csv" "/home/emanuele/Documenti/out.csv" "3" "std_quicksort"

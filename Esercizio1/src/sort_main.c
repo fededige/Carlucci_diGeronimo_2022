@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bi_insertion_sort.h"
+#include "sorting_lib.h"
 
-#define PROGRAM "/bin/bi_insertion_sort_main"
+#define PROGRAM "/bin/sort_main"
 
 typedef struct _record { 
     int id;
@@ -19,7 +19,6 @@ void Usage(){
   fprintf(stderr, "insert field to sort [1 | 2 | 3] ");
   fprintf(stderr, "insert algo name [bi_insertionsort | std_quicksort | rand_quicksort]\n");
   
-  //fprintf(stderr, " text  File to use as testing.\n");
   exit(1);
 }
 
@@ -102,14 +101,14 @@ static void test_with_comparison_function(const char *file_name, const char *fil
   FILE *out = open_file(file_name_out, "w"); 
   /*If a file with the same name already exists its contents 
   are erased and the file is treated as an empty new file.*/
-  Array *array = binary_insertion_create(compare);
+  Array *array = array_create(compare);
   load_array(file_name, array);
 
   if(strcmp(mode, "rand_quicksort") == 0){
-    array = rand_quicksort(array, 0);
+    array = quicksort(array, 0);
   }
   else if(strcmp(mode, "std_quicksort") == 0){
-    array = rand_quicksort(array, 1);
+    array = quicksort(array, 1);
   }
   else if(strcmp(mode, "bi_insertionsort") == 0){
     array = bi_insertion_sort(array);

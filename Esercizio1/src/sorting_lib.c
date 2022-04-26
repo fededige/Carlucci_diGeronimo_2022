@@ -1,4 +1,4 @@
-#include "bi_insertion_sort.h"
+#include "sorting_lib.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
@@ -12,8 +12,8 @@ int choose_random_pivot = 0;
 static unsigned long bi_get_index(Array *array, unsigned long a, unsigned long b, void *key);
 static void insert_element(Array *array, void *element, unsigned long index, unsigned long b);
 
-static Array *Wrand_quicksort(Array *array, long p, long r);
-static long rand_partition(Array *array, long p, long r);
+static Array *Wquicksort(Array *array, long p, long r); /*Wrappedquicksort*/
+static long partition(Array *array, long p, long r);
 static Array *swap_val(Array *array, long a, long b);
 /*static int conta=0;*/
 struct _Array {
@@ -42,16 +42,16 @@ unsigned long array_size(Array *array) {
   return array->size;
 }
 
-Array *binary_insertion_create(int (*precedes) (void *a, void *b)){
+Array *array_create(int (*precedes) (void *a, void *b)){
     if (precedes == NULL) {
-        fprintf(stderr, "binary_insertion_create: precedes parameter cannot be NULL");
+        fprintf(stderr, "array_create: precedes parameter cannot be NULL");
         return NULL;
     }
 
     Array *array = (Array*)malloc(sizeof(Array));
 
     if (array == NULL) {
-        fprintf(stderr, "binary_insertion_create: unable to allocate memory for the array");
+        fprintf(stderr, "array_create: unable to allocate memory for the array");
         return NULL;
     }
 
@@ -142,7 +142,7 @@ static void insert_element(Array *array, void *element, unsigned long index, uns
   array->array[index] = element;
 }
 
-Array *rand_quicksort(Array *array, int mode){
+Array *quicksort(Array *array, int mode){
   if(mode == 0){
     choose_random_pivot = 0;
   }else if(mode == 1){
@@ -151,26 +151,26 @@ Array *rand_quicksort(Array *array, int mode){
     return NULL;
   }
 
-  return Wrand_quicksort(array, 0, (long) array->size-1);
+  return Wquicksort(array, 0, (long) array->size-1);
 }
 
-static Array *Wrand_quicksort(Array *array, long p, long r){
+static Array *Wquicksort(Array *array, long p, long r){
   long q;
   if(r - p > 1){
-    q = rand_partition(array, p, r);
+    q = partition(array, p, r);
     /*printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);*/
     if(q > p){/*q > 1*/
-      array = Wrand_quicksort(array, p, q - 1);
+      array = Wquicksort(array, p, q - 1);
     }
     if(q < r){
-      array = Wrand_quicksort(array, q + 1, r);
+      array = Wquicksort(array, q + 1, r);
     }
     /*printf("DOPO: p: %lu, q: %lu, r: %lu \n", p, q, r);*/
   }
   return array;
 }
 
-static long rand_partition(Array *array, long p, long r){
+static long partition(Array *array, long p, long r){
   long i = p + 1, j = r;
   if(choose_random_pivot == 0){
     long rand_pivot;
