@@ -114,7 +114,7 @@ static void test_array_rnd_qck_three_el() {
   int **act_arr = malloc(3*sizeof(int*));
   for (unsigned long i=0; i < 3; ++i) {
     act_arr[i] = (int*)array_get(array, i);
-    printf("%d\n", *act_arr[i]);
+    /*printf("%d\n", *act_arr[i]);*/
   }
   TEST_ASSERT_EQUAL_PTR_ARRAY(exp_arr, act_arr, 3);
   free(act_arr);
