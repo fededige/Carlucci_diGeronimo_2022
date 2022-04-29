@@ -28,4 +28,4 @@ clean:
 	$(RM) bin/*
 
 run: bin/sort_main
-	./bin/sort_main "/home/federico/Documents/recordmini_2.csv" "/home/federico/Documents/out.csv" "2" "rand_quicksort"
+	./bin/sort_main "/home/federico/Documents/recordmini_1.csv" "/home/federico/Documents/out.csv" "1" "std_quicksort"

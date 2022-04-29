@@ -7,6 +7,14 @@
 
 int choose_random_pivot = 0;
 
+/*
+APPUNTI:
+Wquicksort e quicksort non devono restituire nulla, non serve neanche restituire NULL 
+perchè non ci sarà mai errore (al massimo fallisce l'ordinamento).
+_Array non deve esserci in sorting_lib (insieme a tutti i metodi che lo gestisono), andrà messo in un'altra libreria che gestisce solo quello
+Siccome non abbiamo più _Array i metodi devono prendere più parametri per size, precedes ecc...
+*/
+
 /*METODI STATICI*/
 
 static unsigned long bi_get_index(Array *array, unsigned long a, unsigned long b, void *key);
