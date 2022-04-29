@@ -17,8 +17,8 @@ build/%.o: src/%.c $(COMMON_DEPS)
 lib/%.o: src/%.c $(COMMON_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bin/sort_main: build/sorting_lib.o build/sort_main.o $(COMMON_DEPS)
-	$(CC) -o bin/sort_main build/sorting_lib.o build/sort_main.o
+bin/sort_main: build/sorting_lib.o build/Dynamicarray_lib.o build/sort_main.o $(COMMON_DEPS)
+	$(CC) -o bin/sort_main build/sorting_lib.o build/Dynamicarray_lib.o build/sort_main.o
 
 bin/sorting_lib_tests: build/sorting_lib_tests.o build/sorting_lib.o lib/unity.o $(COMMON_DEPS)
 	$(CC) -o bin/sorting_lib_tests build/sorting_lib_tests.o build/sorting_lib.o lib/unity.o
