@@ -12,7 +12,8 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
     if(list == NULL){
         fprintf(stderr, "CreateSkipList: unable to allocate memory for the SkipList");
     }
-    list->head = (Node*) malloc(sizeof(Node));
+    /*list->head = (Node*) malloc(sizeof(Node));*/
+    list->head = NULL;
     list->max_level = 0;
     list->compare = compare;
     return list;
@@ -42,16 +43,20 @@ void insertSkipList(SkipList *list, void* I){
     if(new->size > list->max_level){
         list->max_level = new->size;
     }
+    if(list->head == NULL){
+      list->head = new;
+      return;
+    }
     Node *x = list->head;
     for(unsigned int k = list->max_level; k > 0; k--){
-        if(x->next[k] == NULL || I < x->next[k]->item){
-            if(k < new->size){
-                new->next[k] = x->next[k];
-                x->next[k] = new;
+        if(x->next[k - 1] == NULL || I < x->next[k - 1]->item){
+            if(k - 1 < new->size){
+                new->next[k - 1] = x->next[k - 1];
+                x->next[k - 1] = new;
             }
         }
         else{
-            x = x->next[k];
+            x = x->next[k - 1];
             k++;    
         }
     }
@@ -61,10 +66,15 @@ void free_Node(Node *node, unsigned int i){
     if (node == NULL) {
         return;
     }
-    free_Node(node->next[i], i);
-    
+    if(node->next[i] == NULL){
+      free(node->next[i]);
+    }
+    else{
+      free_Node(node->next[i], i);
+    }
+    free(node->item);
     free(node);
-}
+} 
 
 void free_SkipList(SkipList *list){
     if(list == NULL){
@@ -72,10 +82,15 @@ void free_SkipList(SkipList *list){
         return;
     }
 
+    if(list->head == NULL){
+      free(list);
+      return;
+    }
+    
     Node *node = list->head;
     
     for(unsigned int i = node->size; i > 0; i--){
-        free_Node(node->next[i], i);
+        free_Node(node->next[i - 1], i - 1);
     }
 
     free(node);
@@ -84,10 +99,13 @@ void free_SkipList(SkipList *list){
 
 Node *CreateNode(void* I, unsigned int randomlevel){
     Node *x;
-    x = malloc(sizeof(Node));
+    x = (Node*) malloc(sizeof(Node));
     x->size = randomlevel;
     x->item = I;
-    x->next = malloc(sizeof(Node) * randomlevel);
+    x->next = (Node**) malloc(sizeof(Node *) * randomlevel);
+    for(unsigned int i = 0; i < randomlevel; i++){
+      x->next[i] = NULL;
+    }
     return x;
 }
 

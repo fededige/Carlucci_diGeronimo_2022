@@ -26,10 +26,10 @@ static void load_SkipList(const char *file_name, SkipList *list){
     fp = open_file(file_name, "r");
 
     while(getline(&line, &len, fp) != -1){
-        Record *record_p = malloc(sizeof(Record));
-            if (record_p == NULL) {
-            fprintf(stderr,"main: unable to allocate memory for the read record");
-            exit(EXIT_FAILURE);
+      Record *record_p = malloc(sizeof(Record));
+        if (record_p == NULL) {
+          fprintf(stderr,"main: unable to allocate memory for the read record");
+          exit(EXIT_FAILURE);
         }
 
     record_p->word = malloc((strlen(line) + 1) * sizeof(char));
@@ -53,22 +53,24 @@ void Usage(){
 }
 
 void test_with_comparison_function(const char *file_name, int(*compare)(void*, void*)){
-    Record *serched_el = malloc(sizeof(Record));
-    serched_el->word = malloc(5 * sizeof(char));
+    Record *serched_el = (Record*) malloc(sizeof(Record));
+    serched_el->word = (char*) malloc(5 * sizeof(char));
     strcpy(serched_el->word, "ciao");
+    printf("Elemento %p\n ",serched_el->word);
     SkipList *list = CreateSkipList(compare);
     load_SkipList(file_name, list);
-    if(searchSkipList(list, serched_el->word) == NULL){
+    /*if(searchSkipList(list, serched_el->word) == NULL){
         fprintf(stderr, "elemento insesistente\n");
     }
     else{
       printf("trovato");
-    }
+    }*/
     free_SkipList(list);
+    free(serched_el);
 }
 
 static int compare(void *r1_p, void *r2_p) {
-  if (r1_p == NULL) {
+  if(r1_p == NULL) {
     fprintf(stderr, "precedes_string: the first parameter is a null pointer");
     exit(EXIT_FAILURE);
   }
