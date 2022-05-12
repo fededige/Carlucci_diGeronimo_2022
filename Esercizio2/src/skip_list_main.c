@@ -53,10 +53,10 @@ void Usage(){
 }
 
 void test_with_comparison_function(const char *file_name, int(*compare)(void*, void*)){
-    Record *serched_el = (Record*) malloc(sizeof(Record));
+    /*Record *serched_el = (Record*) malloc(sizeof(Record));
     serched_el->word = (char*) malloc(5 * sizeof(char));
     strcpy(serched_el->word, "ciao");
-    printf("Elemento %p\n ",serched_el->word);
+    printf("Elemento %p\n ",serched_el->word);*/
     SkipList *list = CreateSkipList(compare);
     load_SkipList(file_name, list);
     /*if(searchSkipList(list, serched_el->word) == NULL){
@@ -66,7 +66,7 @@ void test_with_comparison_function(const char *file_name, int(*compare)(void*, v
       printf("trovato");
     }*/
     free_SkipList(list);
-    free(serched_el);
+    /*free(serched_el);*/
 }
 
 static int compare(void *r1_p, void *r2_p) {

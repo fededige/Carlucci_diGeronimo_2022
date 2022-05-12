@@ -7,14 +7,16 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
         fprintf(stderr, "CreateSkipList: compare parameter cannot be NULL");
         return NULL;
     }
-    SkipList *list = (SkipList*) malloc(sizeof(SkipList));
 
+    SkipList *list = (SkipList*) malloc(sizeof(SkipList));
     if(list == NULL){
         fprintf(stderr, "CreateSkipList: unable to allocate memory for the SkipList");
     }
+
     /*list->head = (Node*) malloc(sizeof(Node));*/
-    list->head = NULL;
-    list->max_level = 0;
+    list->head = CreateNode(NULL, MAX_HEIGHT);
+    /*list->head = NULL;*/
+    list->max_level = MAX_HEIGHT;
     list->compare = compare;
     return list;
 }
@@ -62,7 +64,8 @@ void insertSkipList(SkipList *list, void* I){
     }
 }
 
-void free_Node(Node *node, unsigned int i){
+/*void free_Node(Node *node, unsigned int i){
+
     if (node == NULL) {
         return;
     }
@@ -74,26 +77,22 @@ void free_Node(Node *node, unsigned int i){
     }
     free(node->item);
     free(node);
-} 
+}*/
+
+
 
 void free_SkipList(SkipList *list){
     if(list == NULL){
         fprintf(stderr, "free_SkipList: SkipList parameter cannot be NULL");
         return;
     }
-
-    if(list->head == NULL){
-      free(list);
-      return;
+    Node *current = list->head;
+    while (current != NULL) {
+        Node *next = current->next[0];
+        free(current->item);
+        free(current);
+        current=next;
     }
-    
-    Node *node = list->head;
-    
-    for(unsigned int i = node->size; i > 0; i--){
-        free_Node(node->next[i - 1], i - 1);
-    }
-
-    free(node);
     free(list);
 }
 
