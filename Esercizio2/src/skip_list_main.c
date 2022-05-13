@@ -5,6 +5,13 @@
 
 #define PROGRAM "/bin/skip_list_main"
 
+
+/*
+
+verificare il comportamento tramite valgrind: serched_el per qualche motivo non viene liberato, anzi ne viene perso il riferimento
+
+*/
+
 typedef struct _record { 
     char *word;
 } Record;
@@ -67,20 +74,19 @@ void free_SkipList(SkipList *list){
   if(list == NULL){
     return;
   }
-  Node * node = list->head;
+  Node * node = list->head->next[0];
   if( node == NULL){
-    printf("COGLIONI CONTROLLATE LOAD");
     free_memory(list);
     return;
   }
-  while(node->next[0] != NULL){
+  while(node != NULL){
     Record *element = (Record*)list_get(node);
     if(element == NULL){
       printf("E' vuoto\n");
     }
     node = node->next[0];
-    //printf("element->word: %s\n", element->word);
-    //free(element->word);
+    printf("element->word: %s\n", element->word);
+    free(element->word);
     free(element);
   }
   free_memory(list);
@@ -94,22 +100,20 @@ void free_SkipList(SkipList *list){
 
 
 void test_with_comparison_function(const char *file_name, int(*compare)(void*, void*)){
-    /*Record *serched_el = (Record*) malloc(sizeof(Record));
+    Record *serched_el = (Record*) malloc(sizeof(Record));
     serched_el->word = (char*) malloc(5 * sizeof(char));
-    strcpy(serched_el->word, "ciao");
-    printf("Elemento %p\n ",serched_el->word);*/
+    strcpy(serched_el->word, "riav");
+    printf("Elemento %p\n ",serched_el->word);
     SkipList *list = CreateSkipList(compare);
-    //load_SkipList(file_name, list);
-    /*if(searchSkipList(list, serched_el->word) == NULL){
-        fprintf(stderr, "elemento insesistente\n");
+    load_SkipList(file_name, list);
+    if(searchSkipList(list, serched_el) == NULL){
+      fprintf(stderr, "elemento inesistente\n");
     }
     else{
-      printf("trovato");
-    }*/
-    
-    //free_SkipList(list);
-    free_memory(list);
-    /*free(serched_el);*/
+      printf("trovato\n");
+    }
+    free(serched_el);
+    free_SkipList(list);
 }
 
 static int compare(void *r1_p, void *r2_p) {
@@ -123,7 +127,15 @@ static int compare(void *r1_p, void *r2_p) {
   }
   Record *rec1_p = (Record*)r1_p;
   Record *rec2_p = (Record*)r2_p;
-  return strcmp(rec1_p->word, rec2_p->word) < 0;
+  
+  int value = strcmp(rec1_p->word, rec2_p->word);
+  if(value > 0){
+    return 1;
+  }
+  else if(value < 0){
+    return -1;
+  }
+  return value;
 }
 
 int main(int argc, char const *argv[]){

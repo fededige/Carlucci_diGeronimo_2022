@@ -1,6 +1,7 @@
 #include "skip_list_lib.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 
 void *list_get(Node *node){
@@ -35,12 +36,13 @@ void *searchSkipList(SkipList *list, void* I){
     unsigned int i=0;
     
     for(i = list->max_level; i > 0; i--){
-        while(x->next[i]->item < I){
-            x = x->next[i];
+        while((x->next[i - 1] != NULL) && list->compare(x->next[i - 1]->item, I) == -1){
+            x = x->next[i - 1];
         }
     }
-    x = x->next[1];
-    if(x->item == I){
+    
+    x = x->next[0];
+    if(list->compare(x->next[i]->item, I) == 0){
         return x->item;
     }
     else{
@@ -60,7 +62,7 @@ void insertSkipList(SkipList *list, void* I){
     }
     Node *x = list->head;
     for(unsigned int k = list->max_level; k > 0; k--){
-        if(x->next[k - 1] == NULL || I < x->next[k - 1]->item){
+        if(x->next[k - 1] == NULL || (list->compare(I, x->next[k - 1]->item) == 1)){
             if(k - 1 < new->size){
                 new->next[k - 1] = x->next[k - 1];
                 x->next[k - 1] = new;
@@ -72,23 +74,6 @@ void insertSkipList(SkipList *list, void* I){
         }
     }
 }
-
-/*void free_Node(Node *node, unsigned int i){
-
-    if (node == NULL) {
-        return;
-    }
-    if(node->next[i] == NULL){
-      free(node->next[i]);
-    }
-    else{
-      free_Node(node->next[i], i);
-    }
-    free(node->item);
-    free(node);
-}*/
-
-
 
 void free_memory(SkipList *list){
     if(list == NULL){
@@ -119,7 +104,7 @@ Node *CreateNode(void* I, unsigned int randomlevel){
 
 unsigned int randomLevel(){
     unsigned int lvl = 1;
-    while(random() < 0.5 && lvl < MAX_HEIGHT){
+    while((double)rand() / (double)RAND_MAX < 0.5 && lvl < MAX_HEIGHT){ //ricordarsi di fare la srand
         lvl = lvl + 1;
     }
     return lvl;
