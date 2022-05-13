@@ -7,7 +7,7 @@ struct _SkipList{
     Node *head;
     unsigned int max_level;
     int (*compare) (void*, void*);
-};
+}; 
 
 struct _Node{
     Node **next;
@@ -20,4 +20,5 @@ void insertSkipList(SkipList *list, void* I);
 Node *CreateNode(void* I, unsigned int randomlevel);
 unsigned int randomLevel();
 SkipList *CreateSkipList(int (*compare) (void *a, void *b));
-void free_SkipList(SkipList *list);
+void free_memory(SkipList *list);
+void *list_get(Node *list);

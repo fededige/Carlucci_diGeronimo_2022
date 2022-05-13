@@ -2,6 +2,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+void *list_get(Node *node){
+    if(node == NULL){
+        fprintf(stderr, "list_get: node parameter cannot be NULL");
+        return NULL;
+    }
+    return node->item;
+}
+
 SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
     if(compare == NULL){
         fprintf(stderr, "CreateSkipList: compare parameter cannot be NULL");
@@ -81,7 +90,7 @@ void insertSkipList(SkipList *list, void* I){
 
 
 
-void free_SkipList(SkipList *list){
+void free_memory(SkipList *list){
     if(list == NULL){
         fprintf(stderr, "free_SkipList: SkipList parameter cannot be NULL");
         return;
@@ -89,7 +98,7 @@ void free_SkipList(SkipList *list){
     Node *current = list->head;
     while (current != NULL) {
         Node *next = current->next[0];
-        free(current->item);
+        free(current->next);
         free(current);
         current=next;
     }

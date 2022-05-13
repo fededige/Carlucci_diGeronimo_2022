@@ -18,29 +18,40 @@ FILE *open_file(const char *filename, char *m){
   return file;
 }
 
+
 static void load_SkipList(const char *file_name, SkipList *list){
-    FILE *fp;
-    char *line = NULL;
-    size_t len = 0;
+  FILE *fp;
+  char *line = NULL;
+  size_t len = 0;
+  fp = open_file(file_name, "r");
+  while(getline(&line, &len, fp) != -1){
+    Record *record_p = malloc(sizeof(Record));
 
-    fp = open_file(file_name, "r");
+    if (record_p == NULL) {
+      fprintf(stderr,"main: unable to allocate memory for the read record");
+      exit(EXIT_FAILURE);
+    }
 
-    while(getline(&line, &len, fp) != -1){
-      Record *record_p = malloc(sizeof(Record));
-        if (record_p == NULL) {
-          fprintf(stderr,"main: unable to allocate memory for the read record");
-          exit(EXIT_FAILURE);
-        }
 
-    record_p->word = malloc((strlen(line) + 1) * sizeof(char));
-  
+    if(line[strlen(line) - 1]=='\n'){ //facciamo in modo che ogni stringa non finisca con uno /n
+      line[strlen(line) - 1]='\0';
+    }
+    
+
+    record_p->word =(char*) malloc((strlen(line) + 1) * sizeof(char));
+
     if (record_p->word == NULL) {
       fprintf(stderr,"main: unable to allocate memory for the string of the read record");
       exit(EXIT_FAILURE);
     }
+
     strcpy(record_p->word, line);
+
+    //printf("WORD: parola: %s, lunghezza: %li \n", record_p->word, strlen(record_p->word));
+
     insertSkipList(list, (void*)record_p);
-  }
+    //free(record_p->word);
+  }//end while
   if (line) free(line);
   fclose(fp);
   printf("\nData loaded\n");
@@ -52,20 +63,52 @@ void Usage(){
   exit(1);
 }
 
+void free_SkipList(SkipList *list){
+  if(list == NULL){
+    return;
+  }
+  Node * node = list->head;
+  if( node == NULL){
+    printf("COGLIONI CONTROLLATE LOAD");
+    free_memory(list);
+    return;
+  }
+  while(node->next[0] != NULL){
+    Record *element = (Record*)list_get(node);
+    if(element == NULL){
+      printf("E' vuoto\n");
+    }
+    node = node->next[0];
+    //printf("element->word: %s\n", element->word);
+    //free(element->word);
+    free(element);
+  }
+  free_memory(list);
+}
+/*
+[]---------> NIL
+[]->[]->[]-> NIL
+
+*/
+
+
+
 void test_with_comparison_function(const char *file_name, int(*compare)(void*, void*)){
     /*Record *serched_el = (Record*) malloc(sizeof(Record));
     serched_el->word = (char*) malloc(5 * sizeof(char));
     strcpy(serched_el->word, "ciao");
     printf("Elemento %p\n ",serched_el->word);*/
     SkipList *list = CreateSkipList(compare);
-    load_SkipList(file_name, list);
+    //load_SkipList(file_name, list);
     /*if(searchSkipList(list, serched_el->word) == NULL){
         fprintf(stderr, "elemento insesistente\n");
     }
     else{
       printf("trovato");
     }*/
-    free_SkipList(list);
+    
+    //free_SkipList(list);
+    free_memory(list);
     /*free(serched_el);*/
 }
 
