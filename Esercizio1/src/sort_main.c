@@ -75,7 +75,6 @@ static void load_array(const char *file_name, Array *array) {
     char *field3_in_read_line_p = strtok(NULL, ",");
 
     
-    
     record_p->id = atoi(id_in_read_line_p);     //carico nel record l'ID
     record_p->field2 = atoi(field2_in_read_line_p);     //carico nel record il secondo campo
     record_p->field3 = atof(field3_in_read_line_p);     //carico nel record il terzo campo DA CONTROLLARE
