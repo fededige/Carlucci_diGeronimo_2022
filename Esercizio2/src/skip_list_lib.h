@@ -1,4 +1,4 @@
-#define MAX_HEIGHT 4
+#define MAX_HEIGHT 10
 
 typedef struct _SkipList SkipList;
 typedef struct _Node Node;

@@ -1,25 +1,118 @@
-==29743== Memcheck, a memory error detector
-==29743== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==29743== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==29743== Command: ./bin/skip_list_main /home/federico/Documents/dictionary.txt
-==29743== Parent PID: 6137
-==29743== 
-==29743== 
-==29743== HEAP SUMMARY:
-==29743==     in use at exit: 5 bytes in 1 blocks
-==29743==   total heap usage: 329 allocs, 328 frees, 10,405 bytes allocated
-==29743== 
-==29743== 5 bytes in 1 blocks are definitely lost in loss record 1 of 1
-==29743==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==29743==    by 0x109855: test_with_comparison_function (skip_list_main.c:97)
-==29743==    by 0x109A49: main (skip_list_main.c:139)
-==29743== 
-==29743== LEAK SUMMARY:
-==29743==    definitely lost: 5 bytes in 1 blocks
-==29743==    indirectly lost: 0 bytes in 0 blocks
-==29743==      possibly lost: 0 bytes in 0 blocks
-==29743==    still reachable: 0 bytes in 0 blocks
-==29743==         suppressed: 0 bytes in 0 blocks
-==29743== 
-==29743== For lists of detected and suppressed errors, rerun with: -s
-==29743== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==14770== Memcheck, a memory error detector
+==14770== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==14770== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==14770== Command: ./bin/skip_list_main /home/emanuele/Documenti/dictionary.txt
+==14770== Parent PID: 3565
+==14770== 
+==14770== 
+==14770== Process terminating with default action of signal 2 (SIGINT)
+==14770==    at 0x49063D0: __strcmp_sse2_unaligned (strcmp-sse2-unaligned.S:23)
+==14770==    by 0x109632: compare (skip_list_main.c:127)
+==14770==    by 0x1095F1: insertSkipList (skip_list_lib.c:75)
+==14770==    by 0x10986A: load_SkipList (skip_list_main.c:55)
+==14770==    by 0x10986A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== HEAP SUMMARY:
+==14770==     in use at exit: 7,912,083 bytes in 540,947 blocks
+==14770==   total heap usage: 540,948 allocs, 1 frees, 7,916,179 bytes allocated
+==14770== 
+==14770== 8 bytes in 1 blocks are still reachable in loss record 1 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x1097AC: test_with_comparison_function (skip_list_main.c:98)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 9 bytes in 1 blocks are still reachable in loss record 2 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x1097B9: test_with_comparison_function (skip_list_main.c:99)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 16 bytes in 1 blocks are indirectly lost in loss record 3 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10944C: CreateNode (skip_list_lib.c:108)
+==14770==    by 0x10957D: insertSkipList (skip_list_lib.c:65)
+==14770==    by 0x10986A: load_SkipList (skip_list_main.c:55)
+==14770==    by 0x10986A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 24 bytes in 1 blocks are still reachable in loss record 4 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10949B: CreateSkipList (skip_list_lib.c:21)
+==14770==    by 0x1097D5: test_with_comparison_function (skip_list_main.c:102)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 24 bytes in 1 blocks are still reachable in loss record 5 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x109437: CreateNode (skip_list_lib.c:105)
+==14770==    by 0x1094B2: CreateSkipList (skip_list_lib.c:27)
+==14770==    by 0x1097D5: test_with_comparison_function (skip_list_main.c:102)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 32 bytes in 1 blocks are still reachable in loss record 6 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10944C: CreateNode (skip_list_lib.c:108)
+==14770==    by 0x1094B2: CreateSkipList (skip_list_lib.c:27)
+==14770==    by 0x1097D5: test_with_comparison_function (skip_list_main.c:102)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 40 (24 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 7 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x109437: CreateNode (skip_list_lib.c:105)
+==14770==    by 0x10957D: insertSkipList (skip_list_lib.c:65)
+==14770==    by 0x10986A: load_SkipList (skip_list_main.c:55)
+==14770==    by 0x10986A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 120 bytes in 1 blocks are still reachable in loss record 8 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x48DF573: getdelim (iogetdelim.c:62)
+==14770==    by 0x10987A: load_SkipList (skip_list_main.c:32)
+==14770==    by 0x10987A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 472 bytes in 1 blocks are still reachable in loss record 9 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x48DE95D: __fopen_internal (iofopen.c:65)
+==14770==    by 0x48DE95D: fopen@@GLIBC_2.2.5 (iofopen.c:86)
+==14770==    by 0x1096A6: open_file (skip_list_main.c:19)
+==14770==    by 0x1097F9: load_SkipList (skip_list_main.c:31)
+==14770==    by 0x1097F9: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 1,081,880 bytes in 135,235 blocks are still reachable in loss record 10 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10988A: load_SkipList (skip_list_main.c:33)
+==14770==    by 0x10988A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 1,552,610 bytes in 135,235 blocks are still reachable in loss record 11 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10984B: load_SkipList (skip_list_main.c:44)
+==14770==    by 0x10984B: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 2,031,248 bytes in 135,234 blocks are still reachable in loss record 12 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x10944C: CreateNode (skip_list_lib.c:108)
+==14770==    by 0x10957D: insertSkipList (skip_list_lib.c:65)
+==14770==    by 0x10986A: load_SkipList (skip_list_main.c:55)
+==14770==    by 0x10986A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== 3,245,616 bytes in 135,234 blocks are still reachable in loss record 13 of 13
+==14770==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==14770==    by 0x109437: CreateNode (skip_list_lib.c:105)
+==14770==    by 0x10957D: insertSkipList (skip_list_lib.c:65)
+==14770==    by 0x10986A: load_SkipList (skip_list_main.c:55)
+==14770==    by 0x10986A: test_with_comparison_function (skip_list_main.c:103)
+==14770==    by 0x1099A3: main (skip_list_main.c:142)
+==14770== 
+==14770== LEAK SUMMARY:
+==14770==    definitely lost: 24 bytes in 1 blocks
+==14770==    indirectly lost: 16 bytes in 1 blocks
+==14770==      possibly lost: 0 bytes in 0 blocks
+==14770==    still reachable: 7,912,043 bytes in 540,945 blocks
+==14770==         suppressed: 0 bytes in 0 blocks
+==14770== 
+==14770== For lists of detected and suppressed errors, rerun with: -s
+==14770== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

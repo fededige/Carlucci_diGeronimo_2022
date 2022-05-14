@@ -19,4 +19,4 @@ clean:
 	$(RM) bin/*
 
 run: bin/skip_list_main
-	./bin/skip_list_main "/home/federico/Documents/dictionary.txt" 
+	./bin/skip_list_main "/home/emanuele/Documenti/dictionary.txt" "/home/emanuele/Documenti/correctme.txt" 

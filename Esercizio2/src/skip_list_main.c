@@ -24,11 +24,11 @@ FILE *open_file(const char *filename, char *m){
     return file;
 }
 
-static void load_SkipList(const char *file_name, SkipList *list){
+static void load_SkipList(const char *dictionary, SkipList *list){
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
-    fp = open_file(file_name, "r");
+    fp = open_file(dictionary, "r");
     while (getline(&line, &len, fp) != -1)    {
         Record *record_p = malloc(sizeof(Record));
 
@@ -79,10 +79,10 @@ void free_SkipList(SkipList *list){
     while (node != NULL){
         Record *element = (Record *)list_get(node);
         if (element == NULL){
-            printf("E' vuoto\n");
+            //printf("E' vuoto\n");
         }
         node = node->next[0];
-        printf("element->word: %s\n", element->word);
+        //printf("element->word: %s\n", element->word);
         free(element->word);
         free(element);
     }
@@ -94,20 +94,50 @@ void free_SkipList(SkipList *list){
 
 */
 
-void test_with_comparison_function(const char *file_name, int (*compare)(void *, void *)){
-    Record *serched_el = (Record *)malloc(sizeof(Record));
-    serched_el->word = (char *)malloc(5 * sizeof(char));
-    strcpy(serched_el->word, "riav");
-    printf("Elemento %p\n ", serched_el->word);
+void test_with_comparison_function(const char *dictionary, const char *file_name,int (*compare)(void *, void *)){
+    
     SkipList *list = CreateSkipList(compare);
-    load_SkipList(file_name, list);
-    if (searchSkipList(list, serched_el) == NULL){
-        fprintf(stderr, "elemento inesistente\n");
+    load_SkipList(dictionary, list);
+
+    FILE *fp;
+    char *line = NULL;
+    fp = open_file(file_name, "r");
+    char ch;
+
+    while (!feof(fp)) {
+        while (ch != ' ') {
+            ch = fgetc(fp);
+        }
     }
-    else{
-        printf("trovato\n");
+    
+    while (fgets(str, 50, fp) != NULL){
+        Record *serched_el = malloc(sizeof(Record));
+        if (serched_el == NULL){
+            fprintf(stderr, "main: unable to allocate memory for the read record");
+            exit(EXIT_FAILURE);
+        }
+        printf("lunghezza: %li\n", strlen(str));
+        printf("stringa: %s\n", str);
+        /*serched_el->word = (char *)malloc((strlen(str) + 1) * sizeof(char));
+
+        if (serched_el->word == NULL){
+            fprintf(stderr, "main: unable to allocate memory for the string of the read record");
+            exit(EXIT_FAILURE);
+        }
+
+        strcpy(serched_el->word, str);
+
+        if(searchSkipList(list, serched_el) == NULL){
+            printf("entrato\n");
+            printf("%s\n",serched_el->word);
+        }
+        free(serched_el->word);*/
+        free(serched_el);
     }
-    free(serched_el);
+    if (line)
+        free(line);
+    fclose(fp);
+
     free_SkipList(list);
 }
 
@@ -122,7 +152,7 @@ static int compare(void *r1_p, void *r2_p){
     }
     Record *rec1_p = (Record *)r1_p;
     Record *rec2_p = (Record *)r2_p;
-
+    //printf("primo el: %s, secondo el: %s\n", rec1_p->word, rec2_p->word);
     int value = strcmp(rec1_p->word, rec2_p->word);
     if (value > 0){
         return 1;
@@ -134,9 +164,9 @@ static int compare(void *r1_p, void *r2_p){
 }
 
 int main(int argc, char const *argv[]){
-    if (argc < 2){
+    if (argc < 3){
         Usage();
         exit(EXIT_FAILURE);
     }
-    test_with_comparison_function(argv[1], compare);
+    test_with_comparison_function(argv[1], argv[2], compare);
 }

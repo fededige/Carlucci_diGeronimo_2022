@@ -26,7 +26,7 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
     /*list->head = (Node*) malloc(sizeof(Node));*/
     list->head = CreateNode(NULL, MAX_HEIGHT);
     /*list->head = NULL;*/
-    list->max_level = MAX_HEIGHT;
+    list->max_level = 0;
     list->compare = compare;
     return list;
 }
@@ -37,18 +37,28 @@ void *searchSkipList(SkipList *list, void* I){
     
     for(i = list->max_level; i > 0; i--){
         while((x->next[i - 1] != NULL) && list->compare(x->next[i - 1]->item, I) == -1){
+            //printf("\nx = x->next[i - 1]\n");
+            list->compare(x->next[i - 1]->item, I);
             x = x->next[i - 1];
         }
     }
-    
+    //printf("\nsiamo fuori dal for\n ");
     x = x->next[0];
-    if(list->compare(x->next[i]->item, I) == 0){
+    if(list->compare(x->item, I) == 0){
+        //printf("trovato\n");
         return x->item;
     }
     else{
         return NULL;
     }
 }
+/*
+[3]----------------------------------> NIL
+[2]----------------------------------> NIL
+[1]---------------->[mondo]----------> NIL
+[0]->[ciao]->[ehi]->[mondo]->[tutto]-> NIL
+
+*/
 
 void insertSkipList(SkipList *list, void* I){
     Node *new;
@@ -62,7 +72,7 @@ void insertSkipList(SkipList *list, void* I){
     }
     Node *x = list->head;
     for(unsigned int k = list->max_level; k > 0; k--){
-        if(x->next[k - 1] == NULL || (list->compare(I, x->next[k - 1]->item) == 1)){
+        if(x->next[k - 1] == NULL || (list->compare(I, x->next[k - 1]->item) == -1)){
             if(k - 1 < new->size){
                 new->next[k - 1] = x->next[k - 1];
                 x->next[k - 1] = new;
@@ -107,5 +117,6 @@ unsigned int randomLevel(){
     while((double)rand() / (double)RAND_MAX < 0.5 && lvl < MAX_HEIGHT){ //ricordarsi di fare la srand
         lvl = lvl + 1;
     }
+    //printf("\n\nlvl %i\n\n", lvl);
     return lvl;
 }
