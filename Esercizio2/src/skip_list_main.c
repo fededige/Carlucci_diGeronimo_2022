@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h> 
 #include "skip_list_lib.h"
 
 #define PROGRAM "/bin/skip_list_main"
@@ -95,49 +96,54 @@ void free_SkipList(SkipList *list){
 */
 
 void test_with_comparison_function(const char *dictionary, const char *file_name,int (*compare)(void *, void *)){
-    
+    FILE *fp;
+    fp = open_file(file_name, "r");
+    char ch = '\n';
+    int flag=0;
+    char *str;
+
     SkipList *list = CreateSkipList(compare);
     load_SkipList(dictionary, list);
 
-    FILE *fp;
-    char *line = NULL;
-    fp = open_file(file_name, "r");
-    char ch;
-
-    while (!feof(fp)) {
-        while (ch != ' ') {
-            ch = fgetc(fp);
-        }
-    }
     
-    while (fgets(str, 50, fp) != NULL){
-        Record *serched_el = malloc(sizeof(Record));
-        if (serched_el == NULL){
-            fprintf(stderr, "main: unable to allocate memory for the read record");
-            exit(EXIT_FAILURE);
+    while(ch != -1){
+        ch = (char) fgetc(fp);
+        str = (char *) calloc(2, sizeof(char) * 2);
+        flag = 0;
+        while((ch >= 'A' && ch <='Z') || (ch >= 'a' && ch <= 'z')){
+            if((ch >= 'A' && ch <='Z')){
+                //ch = (char) ch + 32; //non funziona a causa di -Wconversion
+                ch = (char) tolower(ch);
+            }
+            flag = 1;
+            str = strncat(str, &ch, 1);
+            str = realloc(str, strlen(str) + sizeof(char) +1);
+            ch = (char) fgetc(fp);
         }
-        printf("lunghezza: %li\n", strlen(str));
-        printf("stringa: %s\n", str);
-        /*serched_el->word = (char *)malloc((strlen(str) + 1) * sizeof(char));
+        if(flag==1){
+            Record *serched_el = malloc(sizeof(Record));
+            if (serched_el == NULL){
+                fprintf(stderr, "main: unable to allocate memory for the read record");
+                exit(EXIT_FAILURE);
+            }
+            serched_el->word = (char *)malloc((strlen(str) * sizeof(char)) + 1);
 
-        if (serched_el->word == NULL){
-            fprintf(stderr, "main: unable to allocate memory for the string of the read record");
-            exit(EXIT_FAILURE);
+            if (serched_el->word == NULL){
+                fprintf(stderr, "main: unable to allocate memory for the string of the read record");
+                exit(EXIT_FAILURE);
+            }
+
+            strcpy(serched_el->word, str);
+            
+            if(searchSkipList(list, serched_el) == NULL){
+                printf("%s\n",serched_el->word);
+            }
+            free(serched_el->word);
+            free(serched_el);
         }
-
-        strcpy(serched_el->word, str);
-
-        if(searchSkipList(list, serched_el) == NULL){
-            printf("entrato\n");
-            printf("%s\n",serched_el->word);
-        }
-        free(serched_el->word);*/
-        free(serched_el);
+        free(str);
     }
-    if (line)
-        free(line);
     fclose(fp);
-
     free_SkipList(list);
 }
 
