@@ -1,6 +1,6 @@
 #include "skip_list_lib.h"
 #include <stdlib.h>
-#include <stdio.h>
+#include <stdio.h> 
 #include <time.h>
 
 
@@ -38,12 +38,16 @@ void *searchSkipList(SkipList *list, void* I){
     for(i = list->max_level; i > 0; i--){
         while((x->next[i - 1] != NULL) && list->compare(x->next[i - 1]->item, I) == -1){
             //printf("\nx = x->next[i - 1]\n");
-            list->compare(x->next[i - 1]->item, I);
+            //list->compare(x->next[i - 1]->item, I);
             x = x->next[i - 1];
         }
     }
     //printf("\nsiamo fuori dal for\n ");
     x = x->next[0];
+    if( x == NULL){
+        return NULL;
+    }
+    //printf("INDIRIZZO: %p\n",x->item);
     if(list->compare(x->item, I) == 0){
         //printf("trovato\n");
         return x->item;
