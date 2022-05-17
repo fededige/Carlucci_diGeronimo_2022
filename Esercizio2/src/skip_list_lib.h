@@ -1,4 +1,4 @@
-#define MAX_HEIGHT 20
+#define MAX_HEIGHT 10
 
 typedef struct _SkipList SkipList;
 typedef struct _Node Node;
@@ -22,3 +22,5 @@ unsigned int randomLevel();
 SkipList *CreateSkipList(int (*compare) (void *a, void *b));
 void free_memory(SkipList *list);
 void *list_get(Node *list);
+int skipList_is_empty(SkipList *list);
+unsigned int SkipList_size(SkipList *list);

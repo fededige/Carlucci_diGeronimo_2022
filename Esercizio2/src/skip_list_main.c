@@ -6,12 +6,6 @@
 
 #define PROGRAM "/bin/skip_list_main"
 
-/*
-
-verificare il comportamento tramite valgrind: serched_el per qualche motivo non viene liberato, anzi ne viene perso il riferimento
-
-*/
-
 typedef struct _record{
     char *word;
 } Record;
@@ -30,7 +24,7 @@ static void load_SkipList(const char *dictionary, SkipList *list){
     char *line = NULL;
     size_t len = 0;
     fp = open_file(dictionary, "r");
-    while (getline(&line, &len, fp) != -1)    {
+    while (getline(&line, &len, fp) != -1){
         Record *record_p = malloc(sizeof(Record));
 
         if (record_p == NULL){
@@ -38,7 +32,7 @@ static void load_SkipList(const char *dictionary, SkipList *list){
             exit(EXIT_FAILURE);
         }
 
-        if (line[strlen(line) - 1] == '\n'){ // facciamo in modo che ogni stringa non finisca con uno /n
+        if (line[strlen(line) - 1] == '\n'){ // facciamo in modo che ogni stringa non finisca con uno \n
             line[strlen(line) - 1] = '\0';
         }
 
@@ -51,21 +45,19 @@ static void load_SkipList(const char *dictionary, SkipList *list){
 
         strcpy(record_p->word, line);
 
-        // printf("WORD: parola: %s, lunghezza: %li \n", record_p->word, strlen(record_p->word));
-
-        insertSkipList(list, (void *)record_p);
-        // free(record_p->word);
-    } // end while
+        insertSkipList(list, (void *)record_p); //chiama il metodo per inserire nella lista il record
+    }
     if (line)
         free(line);
     fclose(fp);
-    printf("\nData loaded\n");
+    printf("\nData loaded\n\n");
 }
 
 void Usage(){
-    fprintf(stderr, "\nUSAGE\t: \t%s ", PROGRAM);
-    fprintf(stderr, "\"insert input csv pathname\" ");
-    exit(1);
+  fprintf(stderr, "\nUSAGE\t: \t%s ", PROGRAM);
+  fprintf(stderr, "\"insert dictionary pathname\" ");
+  fprintf(stderr, "\"insert text to be corrected pathname\" ");
+  exit(1);
 }
 
 void free_SkipList(SkipList *list){
@@ -77,25 +69,16 @@ void free_SkipList(SkipList *list){
         free_memory(list);
         return;
     }
-    while (node != NULL){
+    while (node != NULL){ //libera tutti gli item
         Record *element = (Record *)list_get(node);
-        if (element == NULL){
-            //printf("E' vuoto\n");
-        }
         node = node->next[0];
-        //printf("element->word: %s\n", element->word);
         free(element->word);
         free(element);
     }
     free_memory(list);
 }
-/*
-[]---------> NIL
-[]->[]->[]-> NIL
 
-*/
-
-void test_with_comparison_function(const char *dictionary, const char *file_name,int (*compare)(void *, void *)){
+void correct_text_with_dictionary(const char *dictionary, const char *file_name,int (*compare)(void *, void *)){
     FILE *fp;
     fp = open_file(file_name, "r");
     char ch = '\n';
@@ -104,21 +87,20 @@ void test_with_comparison_function(const char *dictionary, const char *file_name
 
     SkipList *list = CreateSkipList(compare);
     load_SkipList(dictionary, list);
-
     
-    while(ch != -1){
+    while(ch != -1){ //leggiamo carattere per carattere tutte le parole del testo e le cerchiamo una ad una
         ch = (char) fgetc(fp);
-        str = (char *) calloc(2, sizeof(char) * 2);
-        flag = 0;
+        str = (char *) calloc(1, sizeof(char)); //inizializzia la stringa 0 (è richiesto da strncat)
+        flag = 0; //il flag serve per segnalare se in str c'è una parola oppure punteggiatura, spazi ecc. 
         while((ch >= 'A' && ch <='Z') || (ch >= 'a' && ch <= 'z')){
-            if((ch >= 'A' && ch <='Z')){
-                //ch = (char) ch + 32; //non funziona a causa di -Wconversion
+            if((ch >= 'A' && ch <='Z')){ //tutte le lettere vengono rese minuscole perché nel dizionario non sono presenti maiuscole
+                //ch = (char) ch + 32; //32 è l'offest tra le lettere maiuscole e le lettere minuscole, non funziona a causa di -Wconversion
                 ch = (char) tolower(ch);
             }
             flag = 1;
-            str = strncat(str, &ch, 1);
-            str = realloc(str, strlen(str) + sizeof(char) +1);
-            ch = (char) fgetc(fp);
+            str = realloc(str, strlen(str) + sizeof(char) +1); //reallochiamo la lunghezza della stringa per permetere di accogliere il prossimo carattere
+            str = strncat(str, &ch, 1); //aggiungiamo il carattere appena letto alla stringa
+            ch = (char) fgetc(fp); //leggiamo il prossimo carattere
         }
         if(flag==1){
             Record *serched_el = malloc(sizeof(Record));
@@ -136,7 +118,7 @@ void test_with_comparison_function(const char *dictionary, const char *file_name
             strcpy(serched_el->word, str);
             
             if(searchSkipList(list, serched_el) == NULL){
-                printf("%s\n",serched_el->word);
+                printf("%s\n",serched_el->word); //se non la parola non è presente allora la stampa a stdout
             }
             free(serched_el->word);
             free(serched_el);
@@ -158,7 +140,6 @@ static int compare(void *r1_p, void *r2_p){
     }
     Record *rec1_p = (Record *)r1_p;
     Record *rec2_p = (Record *)r2_p;
-    //printf("primo el: %s, secondo el: %s\n", rec1_p->word, rec2_p->word);
     int value = strcmp(rec1_p->word, rec2_p->word);
     if (value > 0){
         return 1;
@@ -174,5 +155,5 @@ int main(int argc, char const *argv[]){
         Usage();
         exit(EXIT_FAILURE);
     }
-    test_with_comparison_function(argv[1], argv[2], compare);
+    correct_text_with_dictionary(argv[1], argv[2], compare);
 }

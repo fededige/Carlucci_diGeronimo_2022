@@ -3,8 +3,21 @@
 #include <stdio.h> 
 #include <time.h>
 
+int skipList_is_empty(SkipList *list){
+    return list->head->next[0] == NULL;
+}
 
-void *list_get(Node *node){
+unsigned int SkipList_size(SkipList *list){
+    Node *x = list->head;
+    unsigned int k=0;
+    while(x != NULL){
+        k++;
+        x = x->next[0];
+    }
+    return k - 1; /*-1 perchè non conta head*/
+}
+
+void *list_get(Node *node){ //ritorna l'item contenuto in node
     if(node == NULL){
         fprintf(stderr, "list_get: node parameter cannot be NULL");
         return NULL;
@@ -23,9 +36,7 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
         fprintf(stderr, "CreateSkipList: unable to allocate memory for the SkipList");
     }
 
-    /*list->head = (Node*) malloc(sizeof(Node));*/
-    list->head = CreateNode(NULL, MAX_HEIGHT);
-    /*list->head = NULL;*/
+    list->head = CreateNode(NULL, MAX_HEIGHT); //crea un nodo di testa con altezza massima, e lo inizializza tutto a NULL
     list->max_level = 0;
     list->compare = compare;
     return list;
@@ -37,32 +48,19 @@ void *searchSkipList(SkipList *list, void* I){
     
     for(i = list->max_level; i > 0; i--){
         while((x->next[i - 1] != NULL) && list->compare(x->next[i - 1]->item, I) == -1){
-            //printf("\nx = x->next[i - 1]\n");
-            //list->compare(x->next[i - 1]->item, I);
             x = x->next[i - 1];
         }
     }
-    //printf("\nsiamo fuori dal for\n ");
+
     x = x->next[0];
-    if( x == NULL){
-        return NULL;
-    }
-    //printf("INDIRIZZO: %p\n",x->item);
-    if(list->compare(x->item, I) == 0){
-        //printf("trovato\n");
+    
+    if((x != NULL) && (list->compare(x->item, I) == 0)){
         return x->item;
     }
     else{
         return NULL;
     }
 }
-/*
-[3]----------------------------------> NIL
-[2]----------------------------------> NIL
-[1]---------------->[mondo]----------> NIL
-[0]->[ciao]->[ehi]->[mondo]->[tutto]-> NIL
-
-*/
 
 void insertSkipList(SkipList *list, void* I){
     Node *new;
@@ -70,10 +68,7 @@ void insertSkipList(SkipList *list, void* I){
     if(new->size > list->max_level){
         list->max_level = new->size;
     }
-    if(list->head == NULL){
-      list->head = new;
-      return;
-    }
+
     Node *x = list->head;
     for(unsigned int k = list->max_level; k > 0; k--){
         if(x->next[k - 1] == NULL || (list->compare(I, x->next[k - 1]->item) == -1)){
@@ -89,17 +84,17 @@ void insertSkipList(SkipList *list, void* I){
     }
 }
 
-void free_memory(SkipList *list){
+void free_memory(SkipList *list){ //scorre tutta la lista e la libera
     if(list == NULL){
         fprintf(stderr, "free_SkipList: SkipList parameter cannot be NULL");
         return;
     }
-    Node *current = list->head;
-    while (current != NULL) {
-        Node *next = current->next[0];
-        free(current->next);
-        free(current);
-        current=next;
+    Node *corrente = list->head;
+    while (corrente != NULL) {
+        Node *successivo = corrente->next[0];
+        free(corrente->next); //libera l'array di next
+        free(corrente); //libera il nodo attuale
+        corrente=successivo;
     }
     free(list);
 }
@@ -110,17 +105,16 @@ Node *CreateNode(void* I, unsigned int randomlevel){
     x->size = randomlevel;
     x->item = I;
     x->next = (Node**) malloc(sizeof(Node *) * randomlevel);
-    for(unsigned int i = 0; i < randomlevel; i++){
+    for(unsigned int i = 0; i < randomlevel; i++){ //inizializziamo tutti gli elementi di next a NULL
       x->next[i] = NULL;
     }
     return x;
 }
 
-unsigned int randomLevel(){
-    unsigned int lvl = 1;
-    while((double)rand() / (double)RAND_MAX < 0.5 && lvl < MAX_HEIGHT){ //ricordarsi di fare la srand
+unsigned int randomLevel(){ //estraiamo un numero random tra 0 e RAND_MAX e lo dividiamo per RAND_MAX in modo da ottenere un valore compreso tra 0 e 1
+    unsigned int lvl = 1;    
+    while((double)rand() / (double)RAND_MAX < 0.5 && lvl < MAX_HEIGHT){ 
         lvl = lvl + 1;
     }
-    //printf("\n\nlvl %i\n\n", lvl);
     return lvl;
 }
