@@ -59,7 +59,43 @@ public class HeapMinimoUsage {
     HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
     loadArray(filepath, heapminimo);
     printHeap(heapminimo);
+    Record res;
+    res = heapminimo.getRightChild(new Record(6));
+    System.out.println("\nElemento destro di "+6+": "+res.getIntegerField());
+    res = heapminimo.getRightChild(new Record(12));
+    System.out.println("\nElemento destro di "+12+": "+res.getIntegerField());
+    res = heapminimo.getRightChild(new Record(18));
+    System.out.println("\nElemento destro di "+18+": "+res.getIntegerField());
+    res = heapminimo.getLeftChild(new Record(4));
+    System.out.println("Elemento sinistro "+4+": "+res.getIntegerField());
+    res = heapminimo.getLeftChild(new Record(12));
+    System.out.println("Elemento sinistro "+12+": "+res.getIntegerField());
+    res = heapminimo.getLeftChild(new Record(18));
+    System.out.println("Elemento sinistro "+18+": "+res.getIntegerField());
+    res = heapminimo.getElement(4);
+    System.out.println("L'elemento in posizione " + 4 + "e': " + res.getIntegerField());
+    res = heapminimo.getParent(new Record(23));
+    System.out.println("Il padre di " + 23 + " e': " + res.getIntegerField());
+    res = heapminimo.getParent(new Record(18));
+    System.out.println("Il padre di " + 18 + " e': " + res.getIntegerField());
+    res = heapminimo.getParent(new Record(6));
+    System.out.println("Il padre di " + 6 + " e': " + res.getIntegerField());
+    res = heapminimo.getMin();
+    System.out.println("Il minimo e': " + res.getIntegerField());
+    /*heapminimo.printHash();*/
   }
+  /*
+           <4> 
+         /     \
+       <6>     <12> 
+      /    \      |  \
+    <18>   <28>  <22>  <23> 
+    /   \
+  <30>  <45>
+  
+  
+  
+   */
 
   /**
    * @param args the command line arguments. It should contain only one argument
