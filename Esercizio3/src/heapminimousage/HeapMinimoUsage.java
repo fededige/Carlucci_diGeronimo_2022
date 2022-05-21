@@ -14,99 +14,88 @@ import java.lang.Math;
 
 
 public class HeapMinimoUsage {
+    private static final Charset ENCODING = StandardCharsets.UTF_8;
 
-  private static final Charset ENCODING = StandardCharsets.UTF_8;
+    private static void printHeap(HeapMinimo<Record> heapminimo) throws HeapMinimoException{
+        Record currRec = null;
+        int sizeHeap;
 
-  private static void printHeap(HeapMinimo<Record> heapminimo) throws HeapMinimoException{
-    Record currRec = null;
-    int sizeHeap;
+        System.out.println("\nORDERED ARRAY OF RECORDS\n");
+        sizeHeap = heapminimo.size();
 
-    System.out.println("\nORDERED ARRAY OF RECORDS\n");
-    sizeHeap = heapminimo.size();
+        for(int i = 0; i <= (int)(Math.log(sizeHeap) / Math.log(2)); i++){
+            for(int j = 0; j < Math.pow(2,i) && j + Math.pow(2,i) <= sizeHeap; j++){
+                currRec = heapminimo.getElement(j+(int)Math.pow(2,i)-1);
+                System.out.print(" <"+currRec.getIntegerField()+"> ");
+            }
+            System.out.println();
+        }
+  }
 
-    int k = 2;
-    for(int i = 0;i < sizeHeap; i++){
-      currRec = heapminimo.getElement(i);
-      System.out.print(" <"+currRec.getIntegerField()+"> ");
-      if(i == 0){
-        System.out.println();
-      }
-      if(i == k){
-        System.out.println();
-        k += (int) Math.pow(2, i);
-      } 
+    private static void loadArray(String filepath, HeapMinimo<Record> heapminimo)
+        throws IOException, HeapMinimoException{
+        System.out.println("\nLoading data from file...\n");
+
+        Path inputFilePath = Paths.get(filepath);
+        try(BufferedReader fileInputReader = Files.newBufferedReader(inputFilePath, ENCODING)){
+            String line = null;
+            while((line = fileInputReader.readLine()) != null){
+                Record record1 = new Record(Integer.parseInt(line));
+                heapminimo.HeapInsert(record1);
+            }
+        }
+        System.out.println("\nData loaded\n");
     }
 
-  }
-
-  private static void loadArray(String filepath, HeapMinimo<Record> heapminimo)
-	  throws IOException, HeapMinimoException{
-    System.out.println("\nLoading data from file...\n");
-
-    Path inputFilePath = Paths.get(filepath);
-    try(BufferedReader fileInputReader = Files.newBufferedReader(inputFilePath, ENCODING)){
-      String line = null;
-      while((line = fileInputReader.readLine()) != null){
-        Record record1 = new Record(Integer.parseInt(line));
-        heapminimo.HeapInsert(record1);
-      }
+    private static void testWithComparisonFunction(String filepath, Comparator<Record> comparator)
+            throws IOException, HeapMinimoException{
+        HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
+        loadArray(filepath, heapminimo);
+        printHeap(heapminimo);
+        Record res;
+        res = heapminimo.getRightChild(new Record(6));
+        System.out.println("\nElemento destro di "+6+": "+res.getIntegerField());
+        res = heapminimo.getRightChild(new Record(12));
+        System.out.println("\nElemento destro di "+12+": "+res.getIntegerField());
+        res = heapminimo.getRightChild(new Record(18));
+        System.out.println("\nElemento destro di "+18+": "+res.getIntegerField());
+        res = heapminimo.getLeftChild(new Record(4));
+        System.out.println("Elemento sinistro "+4+": "+res.getIntegerField());
+        res = heapminimo.getLeftChild(new Record(12));
+        System.out.println("Elemento sinistro "+12+": "+res.getIntegerField());
+        res = heapminimo.getLeftChild(new Record(18));
+        System.out.println("Elemento sinistro "+18+": "+res.getIntegerField());
+        res = heapminimo.getElement(4);
+        System.out.println("L'elemento in posizione " + 4 + "e' : " + res.getIntegerField());
+        res = heapminimo.getParent(new Record(23));
+        System.out.println("Il padre di " + 23 + ": " + res.getIntegerField());
+        res = heapminimo.getParent(new Record(18));
+        System.out.println("Il padre di " + 18 + ": " + res.getIntegerField());
+        res = heapminimo.getParent(new Record(4));
+        System.out.println("Il padre di " + 4 + ": " + res.getIntegerField());
+        res = heapminimo.getMin();
+        System.out.println("Il minimo: " + res.getIntegerField());
+        /*heapminimo.printHash();*/
     }
-    System.out.println("\nData loaded\n");
-  }
-
-  private static void testWithComparisonFunction(String filepath, Comparator<Record> comparator)
-	  throws IOException, HeapMinimoException{
-    HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
-    loadArray(filepath, heapminimo);
-    printHeap(heapminimo);
-    Record res;
-    res = heapminimo.getRightChild(new Record(6));
-    System.out.println("\nElemento destro di "+6+": "+res.getIntegerField());
-    res = heapminimo.getRightChild(new Record(12));
-    System.out.println("\nElemento destro di "+12+": "+res.getIntegerField());
-    res = heapminimo.getRightChild(new Record(18));
-    System.out.println("\nElemento destro di "+18+": "+res.getIntegerField());
-    res = heapminimo.getLeftChild(new Record(4));
-    System.out.println("Elemento sinistro "+4+": "+res.getIntegerField());
-    res = heapminimo.getLeftChild(new Record(12));
-    System.out.println("Elemento sinistro "+12+": "+res.getIntegerField());
-    res = heapminimo.getLeftChild(new Record(18));
-    System.out.println("Elemento sinistro "+18+": "+res.getIntegerField());
-    res = heapminimo.getElement(4);
-    System.out.println("L'elemento in posizione " + 4 + "e': " + res.getIntegerField());
-    res = heapminimo.getParent(new Record(23));
-    System.out.println("Il padre di " + 23 + " e': " + res.getIntegerField());
-    res = heapminimo.getParent(new Record(18));
-    System.out.println("Il padre di " + 18 + " e': " + res.getIntegerField());
-    res = heapminimo.getParent(new Record(6));
-    System.out.println("Il padre di " + 6 + " e': " + res.getIntegerField());
-    res = heapminimo.getMin();
-    System.out.println("Il minimo e': " + res.getIntegerField());
-    /*heapminimo.printHash();*/
-  }
   /*
-           <4> 
-         /     \
-       <6>     <12> 
-      /    \      |  \
-    <18>   <28>  <22>  <23> 
-    /   \
-  <30>  <45>
-  
-  
-  
-   */
+            <4>0 
+         /       \
+       <22>1        <6>2 
+      /    \        |   \
+    <23>3   <45>4  <12>5  <18>6 
+    /    \      \
+  <30>7  <28>8   <78>9
 
-  /**
-   * @param args the command line arguments. It should contain only one argument
-   * specifying the filepath of the data file
-   */
-  public static void main(String[] args) throws IOException, HeapMinimoException, Exception {
-    if(args.length < 1)
-      throw new Exception("Usage: HeapMinimoUsage <file_name>");
+  */
+  
+    public static void main(String[] args) throws IOException, HeapMinimoException, Exception {
+        if(args.length < 1)
+        throw new Exception("Usage: HeapMinimoUsage <file_name>");
 
-    testWithComparisonFunction(args[0],new RecordComparatorIntField());
-    /*testWithComparisonFunction(args[0],new RecordComparatorStringField());*/
-  }
+        testWithComparisonFunction(args[0],new RecordComparatorIntField());
+        /*testWithComparisonFunction(args[0],new RecordComparatorStringField());*/
+    }
 
 }
+// java -jar ./build/HeapMinimo.jar /home/federico/Documents/es3_dataset/heap.txt
+// java -jar ./build/HeapMinimo_Test.jar

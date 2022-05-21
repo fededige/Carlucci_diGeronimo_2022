@@ -60,17 +60,20 @@ public class HeapMinimo<T>{
         indices.put(element, index);
     }
 
-    public int getParentIndex(int index) throws HeapMinimoException {
+    private int getParentIndex(int index) throws HeapMinimoException {
         if(index < 0 || index > size())
             throw new HeapMinimoException("Index "+index+"is out of the array bounds");
 
-        return index / 2;
+        return (index - 1) / 2;
     }
 
     public T getParent(T element) throws HeapMinimoException {
         if(element == null)
             throw new HeapMinimoException("Element cannot be null");
-        return (this.array).get(ind);
+        int index = indices.get(element);
+        if(index == 0)
+            throw new HeapMinimoException("Element is the first one");
+        return (this.array).get(getParentIndex(index));
     }
 
     public T getLeftChild(T element) throws HeapMinimoException {
