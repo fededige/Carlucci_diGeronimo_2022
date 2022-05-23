@@ -30,7 +30,7 @@ public class HeapMinimoUsage {
             }
             System.out.println();
         }
-  }
+  } 
 
     private static void loadArray(String filepath, HeapMinimo<Record> heapminimo)
         throws IOException, HeapMinimoException{
@@ -52,7 +52,9 @@ public class HeapMinimoUsage {
         HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
         loadArray(filepath, heapminimo);
         printHeap(heapminimo);
-        Record res;
+        heapminimo.extractMin();
+        printHeap(heapminimo);
+        /*Record res;
         res = heapminimo.getRightChild(new Record(6));
         System.out.println("\nElemento destro di "+6+": "+res.getIntegerField());
         res = heapminimo.getRightChild(new Record(12));
@@ -74,7 +76,7 @@ public class HeapMinimoUsage {
         res = heapminimo.getParent(new Record(4));
         System.out.println("Il padre di " + 4 + ": " + res.getIntegerField());
         res = heapminimo.getMin();
-        System.out.println("Il minimo: " + res.getIntegerField());
+        System.out.println("Il minimo: " + res.getIntegerField());*/
         /*heapminimo.printHash();*/
     }
   /*
@@ -90,7 +92,7 @@ public class HeapMinimoUsage {
   
     public static void main(String[] args) throws IOException, HeapMinimoException, Exception {
         if(args.length < 1)
-        throw new Exception("Usage: HeapMinimoUsage <file_name>");
+            throw new Exception("Usage: HeapMinimoUsage <file_name>");
 
         testWithComparisonFunction(args[0],new RecordComparatorIntField());
         /*testWithComparisonFunction(args[0],new RecordComparatorStringField());*/
