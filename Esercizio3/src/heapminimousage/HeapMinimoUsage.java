@@ -54,48 +54,44 @@ public class HeapMinimoUsage {
         printHeap(heapminimo);
         heapminimo.extractMin();
         printHeap(heapminimo);
-        /*Record res;
-        res = heapminimo.getRightChild(new Record(6));
-        System.out.println("\nElemento destro di "+6+": "+res.getIntegerField());
-        res = heapminimo.getRightChild(new Record(12));
-        System.out.println("\nElemento destro di "+12+": "+res.getIntegerField());
-        res = heapminimo.getRightChild(new Record(18));
-        System.out.println("\nElemento destro di "+18+": "+res.getIntegerField());
-        res = heapminimo.getLeftChild(new Record(4));
-        System.out.println("Elemento sinistro "+4+": "+res.getIntegerField());
-        res = heapminimo.getLeftChild(new Record(12));
-        System.out.println("Elemento sinistro "+12+": "+res.getIntegerField());
-        res = heapminimo.getLeftChild(new Record(18));
-        System.out.println("Elemento sinistro "+18+": "+res.getIntegerField());
+        int ind = 2;
+        Record res;
+        res = heapminimo.getRightChild(ind);
+        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
+        ind = 10;
+        res = heapminimo.getRightChild(ind);
+        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
+        ind = 13;
+        res = heapminimo.getRightChild(ind);
+        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
+        ind = 16;
+        res = heapminimo.getLeftChild(ind);
+        System.out.println("Elemento sinistro "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
+        ind = 1;
+        res = heapminimo.getLeftChild(ind);
+        System.out.println("Elemento sinistro "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
         res = heapminimo.getElement(4);
-        System.out.println("L'elemento in posizione " + 4 + "e' : " + res.getIntegerField());
-        res = heapminimo.getParent(new Record(23));
-        System.out.println("Il padre di " + 23 + ": " + res.getIntegerField());
-        res = heapminimo.getParent(new Record(18));
-        System.out.println("Il padre di " + 18 + ": " + res.getIntegerField());
-        res = heapminimo.getParent(new Record(4));
-        System.out.println("Il padre di " + 4 + ": " + res.getIntegerField());
-        res = heapminimo.getMin();
-        System.out.println("Il minimo: " + res.getIntegerField());*/
-        /*heapminimo.printHash();*/
+        System.out.println("L'elemento in posizione " + 4 + " e' : " + res.getIntegerField());
+        ind = 12;
+        res = heapminimo.getParent(ind);
+        System.out.println("Il padre di " + heapminimo.getElement(ind) + ": " + res.getIntegerField());
+        ind = 22;
+        res = heapminimo.getParent(ind);
+        System.out.println("Il padre di " + heapminimo.getElement(ind) + ": " + res.getIntegerField());
+        heapminimo.extractMin();
+        System.out.println("Estrazione del minimo \n\n");
+        printHeap(heapminimo);
+        ind = 34;
+        heapminimo.subtractValue(ind, new Record(0));
+        System.out.println("modifica di "+ heapminimo.getElement(ind) +" in 0 \n\n");
+        printHeap(heapminimo);
     }
-  /*
-            <4>0 
-         /       \
-       <22>1        <6>2 
-      /    \        |   \
-    <23>3   <45>4  <12>5  <18>6 
-    /    \      \
-  <30>7  <28>8   <78>9
-
-  */
   
     public static void main(String[] args) throws IOException, HeapMinimoException, Exception {
         if(args.length < 1)
             throw new Exception("Usage: HeapMinimoUsage <file_name>");
 
         testWithComparisonFunction(args[0],new RecordComparatorIntField());
-        /*testWithComparisonFunction(args[0],new RecordComparatorStringField());*/
     }
 
 }

@@ -84,7 +84,7 @@ public class HeapMinimoTests {
   }
 
 
-  /*@Test
+  @Test
   public void testgetParent_threeEl() throws Exception{
 
     Integer[] arrExpected = {i1, i1};
@@ -95,11 +95,11 @@ public class HeapMinimoTests {
 
     Integer[] arrActual = new Integer[2];
 
-    arrActual[0] = heapminimo.getParent(i2);
-    arrActual[1] = heapminimo.getParent(i3);    
+    arrActual[0] = heapminimo.getParent(1);
+    arrActual[1] = heapminimo.getParent(2);    
 
     assertArrayEquals(arrExpected,arrActual);
-  }*/
+  }
 
   @Test
   public void testextractMin_threeEl() throws Exception{
@@ -119,14 +119,14 @@ public class HeapMinimoTests {
     assertArrayEquals(arrExpected, arrActual);
   }
 
-  /*@Test
+  @Test
   public void testgetLeftChild_threeEl() throws Exception{
 
     heapminimo.HeapInsert(i2);
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
 
-    assertEquals(i2, heapminimo.getLeftChild(i1));
+    assertEquals(i2, heapminimo.getLeftChild(0));
   }
 
   @Test
@@ -136,8 +136,27 @@ public class HeapMinimoTests {
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
 
-    assertEquals(i3, heapminimo.getRightChild(i1));
-  }*/
+    assertEquals(i3, heapminimo.getRightChild(0));
+  }
+
+  @Test
+  public void testsubtractValue_threeEl() throws Exception{
+    Integer newV = -15;
+    Integer[] arrExpected = {newV, i2, i3};
+
+    heapminimo.HeapInsert(i2);
+    heapminimo.HeapInsert(i1);
+    heapminimo.HeapInsert(i3);
+    heapminimo.subtractValue(0, newV);
+
+    Integer[] arrActual = new Integer[3];
+
+    arrActual[0] = heapminimo.getElement(0);
+    arrActual[1] = heapminimo.getElement(1);
+    arrActual[2] = heapminimo.getElement(2);
+
+    assertArrayEquals(arrExpected, arrActual);
+  }
 
 }
 
