@@ -95,8 +95,8 @@ public class HeapMinimoTests {
 
     Integer[] arrActual = new Integer[2];
 
-    arrActual[0] = heapminimo.getParent(1);
-    arrActual[1] = heapminimo.getParent(2);    
+    arrActual[0] = heapminimo.getParent(i2);
+    arrActual[1] = heapminimo.getParent(i3);    
 
     assertArrayEquals(arrExpected,arrActual);
   }
@@ -126,7 +126,7 @@ public class HeapMinimoTests {
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
 
-    assertEquals(i2, heapminimo.getLeftChild(0));
+    assertEquals(i2, heapminimo.getLeftChild(i1));
   }
 
   @Test
@@ -136,7 +136,7 @@ public class HeapMinimoTests {
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
 
-    assertEquals(i3, heapminimo.getRightChild(0));
+    assertEquals(i3, heapminimo.getRightChild(i1));
   }
 
   @Test

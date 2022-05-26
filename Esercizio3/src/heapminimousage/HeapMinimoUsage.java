@@ -11,6 +11,7 @@ import java.util.Comparator;
 import heapminimo.HeapMinimo;
 import heapminimo.HeapMinimoException;
 import java.lang.Math;
+import java.util.ArrayList;
 
 
 public class HeapMinimoUsage {
@@ -32,7 +33,7 @@ public class HeapMinimoUsage {
         }
   } 
 
-    private static void loadArray(String filepath, HeapMinimo<Record> heapminimo)
+    private static void loadArray(String filepath, HeapMinimo<Record> heapminimo, ArrayList<Record> arrayelement)
         throws IOException, HeapMinimoException{
         System.out.println("\nLoading data from file...\n");
 
@@ -41,6 +42,7 @@ public class HeapMinimoUsage {
             String line = null;
             while((line = fileInputReader.readLine()) != null){
                 Record record1 = new Record(Integer.parseInt(line));
+                arrayelement.add(record1);
                 heapminimo.HeapInsert(record1);
             }
         }
@@ -50,41 +52,31 @@ public class HeapMinimoUsage {
     private static void testWithComparisonFunction(String filepath, Comparator<Record> comparator)
             throws IOException, HeapMinimoException{
         HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
-        loadArray(filepath, heapminimo);
+        ArrayList<Record> arrayelement = new ArrayList<>();
+        loadArray(filepath, heapminimo, arrayelement);
         printHeap(heapminimo);
+                
+        Record res, el;
+        el = arrayelement.get(6);
+        res = heapminimo.getRightChild(arrayelement.get(6));
+        System.out.println("\nElemento destro di "+ el.getIntegerField() +": "+res.getIntegerField());
+
         heapminimo.extractMin();
         printHeap(heapminimo);
-        int ind = 2;
-        Record res;
-        res = heapminimo.getRightChild(ind);
-        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
-        ind = 10;
-        res = heapminimo.getRightChild(ind);
-        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
-        ind = 13;
-        res = heapminimo.getRightChild(ind);
-        System.out.println("\nElemento destro di "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
-        ind = 16;
-        res = heapminimo.getLeftChild(ind);
-        System.out.println("Elemento sinistro "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
-        ind = 1;
-        res = heapminimo.getLeftChild(ind);
-        System.out.println("Elemento sinistro "+ heapminimo.getElement(ind) +": "+res.getIntegerField());
-        res = heapminimo.getElement(4);
-        System.out.println("L'elemento in posizione " + 4 + " e' : " + res.getIntegerField());
-        ind = 12;
-        res = heapminimo.getParent(ind);
-        System.out.println("Il padre di " + heapminimo.getElement(ind) + ": " + res.getIntegerField());
-        ind = 22;
-        res = heapminimo.getParent(ind);
-        System.out.println("Il padre di " + heapminimo.getElement(ind) + ": " + res.getIntegerField());
-        heapminimo.extractMin();
-        System.out.println("Estrazione del minimo \n\n");
+
+        el = arrayelement.get(6);
+        res = heapminimo.getRightChild(arrayelement.get(6));
+        System.out.println("\nElemento destro di "+ el.getIntegerField() +": "+res.getIntegerField());
+
+        Record tmp = new Record(0);
+        heapminimo.subtractValue(arrayelement.get(0), tmp);
+        System.out.println("modifica di "+ arrayelement.get(0).getIntegerField() +" in " + tmp.getIntegerField());
+        arrayelement.set(0, tmp); //salvo il nuovo valore per eventuali riferimenti futuri
         printHeap(heapminimo);
-        ind = 34;
-        heapminimo.subtractValue(ind, new Record(0));
-        System.out.println("modifica di "+ heapminimo.getElement(ind) +" in 0 \n\n");
-        printHeap(heapminimo);
+
+        el = arrayelement.get(0);
+        res = heapminimo.getRightChild(arrayelement.get(0));
+        System.out.println("\nElemento destro di "+ el.getIntegerField() +": "+res.getIntegerField());
     }
   
     public static void main(String[] args) throws IOException, HeapMinimoException, Exception {
