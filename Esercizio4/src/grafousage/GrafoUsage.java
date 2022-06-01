@@ -36,12 +36,27 @@ public class GrafoUsage{
 
     private static void testFunction(String filepath) throws IOException, GrafoException{
         Grafo<CityName, Distance> maps = new Grafo<>(0);
+        ArrayList<CityName> adj = new ArrayList<>();
         loadMap(filepath, maps);
         maps.printMap(); //momentaneo
-        System.out.println(maps.containsNode(new CityName("monteriggioni")));
+        /*System.out.println(maps.containsNode(new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio"), new Distance(4040.6818551679175)));
-        maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"), new Distance(4040.6818551679175));
+        */
+        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio")));
+        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("casa nagli")));
+        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("staggia")));
+        System.out.println("Numero archi: " + maps.numEdge());
+        System.out.println("Numero di vertici: " + maps.numVertex());
+        adj = maps.getAdj(new CityName("monteriggioni"));
+        System.out.println("adiacenti di monteriggioni" + adj);
+        System.out.println("peso: " + maps.getLabel(new CityName("petraio"), new CityName("monteriggioni")));
+        System.out.println("peso: " + maps.getLabel(new CityName("monteriggioni"), new CityName("petraio")));
+        maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"));
         maps.printMap(); //momentaneo
+        System.out.println("Numero archi: "+ maps.numEdge());
+        System.out.println("Numero di vertici: "+ maps.numVertex());
+        adj = maps.getAdj(new CityName("monteriggioni"));
+        System.out.println("adiacenti di monteriggioni" + adj);
     }
     
     public static void main(String[] args) throws IOException, GrafoException, Exception{

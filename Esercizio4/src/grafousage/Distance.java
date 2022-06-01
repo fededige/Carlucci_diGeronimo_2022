@@ -21,10 +21,15 @@ public class Distance {
     return this.distance == ((Distance)dist).getDistance();
   }
 
-  /*@Override
+  @Override
+  public String toString() {
+    return Double.toString(this.distance);
+  }
+
+  @Override
   public int hashCode() {
     int hash = 7;
     hash = 71 * hash + Objects.hashCode(this.distance);
     return hash;
-  }*/
+  }
 }
