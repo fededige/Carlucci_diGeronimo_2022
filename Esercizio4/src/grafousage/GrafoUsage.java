@@ -40,6 +40,8 @@ public class GrafoUsage{
         maps.printMap(); //momentaneo
         System.out.println(maps.containsNode(new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio"), new Distance(4040.6818551679175)));
+        maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"), new Distance(4040.6818551679175));
+        maps.printMap(); //momentaneo
     }
     
     public static void main(String[] args) throws IOException, GrafoException, Exception{

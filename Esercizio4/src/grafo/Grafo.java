@@ -24,7 +24,7 @@ Milano, Roma, 3000.89
 public class Grafo<K, T>{
     public ArrayList<LinkedList<Node<T, K>>> listaAdiacenza = null;
     private Hashtable<K, Integer> indecesMap;
-    private int mode;
+    private int mode;//0 = diretto, 1 = indiretto
 
     public Grafo(int mode) throws GrafoException{
         if(mode == 0 || mode == 1)
@@ -68,16 +68,41 @@ public class Grafo<K, T>{
     public boolean containsEdge(K vertexFrom, K vertexTo, T weight) throws GrafoException{
         if (containsNode(vertexFrom) == false)
             throw new GrafoException("Nodo partenza inesistente");
+        if (containsNode(vertexTo) == false)
+            throw new GrafoException("Nodo arrivo inesistente");
         int indexFrom = (this.indecesMap).get(vertexFrom);
-        /*System.out.println("Nodo di partenza: "+(this.listaAdiacenza).get(indexFrom));
-        int indexTo = (this.indecesMap).get(vertexTo);
-        System.out.println("Nodo Arrivo : "+(this.listaAdiacenza).get(indexTo));*/
-        return (this.listaAdiacenza).get(indexFrom).contains(new Node(vertexTo, weight));
+        boolean res =  (this.listaAdiacenza).get(indexFrom).contains(new Node(vertexTo, weight));
+        if(mode == 0 && res == false){//grafo indiretto
+            int indexTo = (this.indecesMap).get(vertexTo);
+            res =  (this.listaAdiacenza).get(indexTo).contains(new Node(vertexFrom, weight));
+        }
+        return res;
+    }
+    
+    /* Controlliamo veramente se l'arco esiste in quel verso */
+    public void removeEdge(K vertexFrom, K vertexTo, T weight) throws GrafoException{
+        if(containsEdge(vertexFrom, vertexTo, weight) == false)
+            throw new GrafoException("arco inesistente");
+        int indexFrom=0, indexEdge=0;
+        boolean flag = false;
+        indexFrom = (this.indecesMap).get(vertexFrom);
+        if(mode == 0){
+            if(!((this.listaAdiacenza).get(indexFrom).contains(new Node(vertexTo, weight)))){
+                indexFrom = (this.indecesMap).get(vertexTo);
+                indexEdge = (this.listaAdiacenza).get(indexFrom).indexOf(new Node(vertexFrom, weight));
+                (this.listaAdiacenza).get(indexFrom).remove(indexEdge);
+                flag = true; // ci serve per non entrare nell'if se abbiamo già rimosso l'arco
+            }
+        }
+        if(flag == false){
+            indexEdge = (this.listaAdiacenza).get(indexFrom).indexOf(new Node(vertexTo, weight));
+            (this.listaAdiacenza).get(indexFrom).remove(indexEdge);
+        }
     }
 
     public void printMap(){
         for(int i=0; i< listaAdiacenza.size(); i++){
-            LinkedList<Node<T, K>> temp = listaAdiacenza.get(i);
+            LinkedList<Node<T, K>> temp = (this.listaAdiacenza).get(i);
             for(int j = 0; j < temp.size(); j++){
                 System.out.print(temp.get(j) + " ");
             }
