@@ -38,8 +38,10 @@ public class GrafoUsage{
         Grafo<CityName, Distance> maps = new Grafo<>(0);
         loadMap(filepath, maps);
         maps.printMap(); //momentaneo
+        System.out.println(maps.containsNode(new CityName("monteriggioni")));
+        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio"), new Distance(4040.6818551679175)));
     }
-
+    
     public static void main(String[] args) throws IOException, GrafoException, Exception{
         if(args.length < 1){
             throw new Exception("Usage: GrafoUsage <file_name>");

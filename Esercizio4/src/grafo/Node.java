@@ -17,4 +17,11 @@ public class Node<T, K>{
     public T getWeight(){
         return this.weight;
     }
+
+    @Override
+    public boolean equals(Object node){
+        if(!(node instanceof Node))
+            return false;
+        return ((this.name).equals(((Node)node).getName()) && (this.weight).equals(((Node)node).getWeight()));
+    }
 }
