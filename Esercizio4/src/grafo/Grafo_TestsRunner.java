@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 public class Grafo_TestsRunner {
 
   public static void main(String[] args) {
-    Result result = JUnitCore.runClasses(Grafo.class);
+    Result result = JUnitCore.runClasses(GrafoTests.class);
     for (Failure failure : result.getFailures()) {
       System.out.println(failure.toString());
     }

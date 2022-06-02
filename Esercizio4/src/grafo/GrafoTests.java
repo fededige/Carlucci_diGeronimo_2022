@@ -7,156 +7,146 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+import java.util.ArrayList;
 
-public class GrafoTests {/*
-
-  class IntegerComparator implements Comparator<Integer> {
-    @Override
-    public int compare(Integer i1, Integer i2) {
-      return i1.compareTo(i2);
-    }
-  }
-
+public class GrafoTests {
 
   private Integer i1,i2,i3;
-  private Grafo<String, Integer> heapminimo;
+  private String a, b, c;
+  private Grafo<String, Integer> grafo;
 
   @Before
   public void createGrafo() throws GrafoException{
     i1 = -12;
     i2 = 0;
     i3 = 4;
-    heapminimo = new Grafo<>(0);
+    a = "A";
+    b = "B";
+    c = "C";
+    grafo = new Grafo<>(0);
   }
  
   @Test
-  public void testIsEmpty_zeroEl(){
-    assertTrue(heapminimo.isEmpty());
+  public void testnumVertex_zeroEl() throws GrafoException{
+    assertTrue(grafo.numVertex() == 0);
   }
 
   @Test
-  public void testIsEmpty_oneEl() throws Exception{
-    heapminimo.HeapInsert(i1);
-    assertFalse(heapminimo.isEmpty());
-  }
-
-
-  @Test
-  public void testSize_zeroEl() throws Exception{
-    assertEquals(0,heapminimo.size());
+  public void testnumVertex_threeEl() throws GrafoException {
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    assertTrue(grafo.numVertex() == 3);
   }
 
   @Test
-  public void testSize_oneEl() throws Exception{
-    heapminimo.HeapInsert(i1);
-    assertEquals(1,heapminimo.size());
+  public void testnumEdge_zeroEl() throws GrafoException{
+    assertTrue(grafo.numEdge() == 0);
   }
 
   @Test
-  public void testSize_twoEl() throws Exception{
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i2);
-    assertEquals(2,heapminimo.size());
-  }
-
-  @Test
-  public void testAddGet_oneEl() throws Exception{
-    heapminimo.HeapInsert(i1);
-    assertTrue(i1==heapminimo.getElement(0));
+  public void testnumEdge_threeEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    grafo.addEdge(a, b, i1);
+    grafo.addEdge(b, c, i2);
+    grafo.addEdge(a, c, i3);
+    assertTrue(grafo.numEdge() == 3);
   }
 
 
   @Test
-  public void testHeap_threeEl() throws Exception{
-
-    Integer[] arrExpected = {i1,i2,i3};
-
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-
-    Integer[] arrActual = new Integer[3];
-
-    for(int i=0;i<3;i++)
-      arrActual[i] = heapminimo.getElement(i);
-
-    assertArrayEquals(arrExpected,arrActual);
-  }
-
-
-  @Test
-  public void testgetParent_threeEl() throws Exception{
-
-    Integer[] arrExpected = {i1, i1};
-
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-
-    Integer[] arrActual = new Integer[2];
-
-    arrActual[0] = heapminimo.getParent(i2);
-    arrActual[1] = heapminimo.getParent(i3);    
-
-    assertArrayEquals(arrExpected,arrActual);
+  public void testcontainsNode_oneEl() throws GrafoException{
+    grafo.addNode(a);
+    assertTrue(grafo.containsNode("A"));
   }
 
   @Test
-  public void testextractMin_threeEl() throws Exception{
+  public void testcontainsEdge_oneEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addEdge(a, b, i1);
+    assertTrue(grafo.containsEdge("A", "B"));
+  }
 
-    Integer[] arrExpected = {i2, i3};
+  @Test
+  public void testremoveVertex_oneEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.removeVertex("A");
+    assertTrue(grafo.containsNode("A") == false && grafo.numVertex() == 0);
+  }
 
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-    heapminimo.extractMin();
-
-    Integer[] arrActual = new Integer[2];
-
-    arrActual[0] = heapminimo.getElement(0);
-    arrActual[1] = heapminimo.getElement(1);
+  @Test
+  public void testremoveEdge_oneEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addEdge(a, b, i1);
+    grafo.removeEdge("A","B");
+    assertTrue(grafo.containsEdge("A","B") == false && grafo.numEdge() == 0);
+  }
+  
+  @Test
+  public void testgetAdj_threeEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    grafo.addEdge(a, b, i1);
+    grafo.addEdge(b, c, i2);
+    grafo.addEdge(a, c, i3);
+    ArrayList<String> res = grafo.getAdj("A");
+    String[] arrExpected = res.toArray(new String[0]);
+    String[] arrActual ={"B","C"};
 
     assertArrayEquals(arrExpected, arrActual);
   }
 
   @Test
-  public void testgetLeftChild_threeEl() throws Exception{
-
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-
-    assertEquals(i2, heapminimo.getLeftChild(i1));
+  public void testgetLabel_threeEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    grafo.addEdge(a, b, i1);
+    grafo.addEdge(b, c, i2);
+    grafo.addEdge(a, c, i3);
+  
+    assertTrue(grafo.getLabel("A", "C") == i3);
   }
-
+  
   @Test
-  public void testgetRightChild_threeEl() throws Exception{
-
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-
-    assertEquals(i3, heapminimo.getRightChild(i1));
-  }
-
-  @Test
-  public void testsubtractValue_threeEl() throws Exception{
-    Integer newV = -15;
-    Integer[] arrExpected = {newV, i2, i3};
-
-    heapminimo.HeapInsert(i2);
-    heapminimo.HeapInsert(i1);
-    heapminimo.HeapInsert(i3);
-    heapminimo.subtractValue(0, newV);
-
-    Integer[] arrActual = new Integer[3];
-
-    arrActual[0] = heapminimo.getElement(0);
-    arrActual[1] = heapminimo.getElement(1);
-    arrActual[2] = heapminimo.getElement(2);
+  public void testgetVertices_threeEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    grafo.addEdge(a, b, i1);
+    grafo.addEdge(b, c, i2);
+    grafo.addEdge(a, c, i3);
+    ArrayList<String> res = grafo.getVertices();
+    String[] arrExpected = res.toArray(new String[0]);
+    String[] arrActual ={"A","B","C"};
 
     assertArrayEquals(arrExpected, arrActual);
   }
 
-*/}
+  @Test
+  public void testgetEdge_threeEl() throws GrafoException{
+    grafo.addNode(a);
+    grafo.addNode(b);
+    grafo.addNode(c);
+    grafo.addEdge(a, b, i1);
+    grafo.addEdge(b, c, i2);
+    grafo.addEdge(a, c, i3);
+    ArrayList<ArrayList<String>> res = grafo.getEdges();
+    String[][] arrExpected = new String[3][2];
+    for(int i = 0; i < res.size(); i++){
+      for(int j = 0; j < res.get(i).size(); j++){
+        arrExpected[i][j] = res.get(i).get(j);
+      }
+    }
+    String[][] arrActual ={{"A", "B"}, {"A", "C"}, {"B","C"}};
+
+    assertEquals(arrExpected, arrActual);
+  }
+  
+}
 

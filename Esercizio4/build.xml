@@ -36,7 +36,7 @@
 
     <target depends="compile" name="junit">
         <mkdir dir="build"/>
-        <jar destfile="build/Grafo_Test.jar" basedir="${classes.dir}">
+        <jar destfile="build/GrafoTests.jar" basedir="${classes.dir}">
           <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
           <manifest>
             <attribute name="Main-Class" value="grafo/Grafo_TestsRunner"/>

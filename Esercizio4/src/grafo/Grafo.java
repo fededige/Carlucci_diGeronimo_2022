@@ -48,7 +48,7 @@ public class Grafo<K, T>{
             indexFrom = listaAdiacenza.size() - 1;
             (this.listaAdiacenza).get(indexFrom).add(new Node(null, nameFrom));
             (this.indecesMap).put(nameFrom, indexFrom);
-            System.out.println(indecesMap);
+            //System.out.println(indecesMap);
         }
     }
 
@@ -158,8 +158,8 @@ public class Grafo<K, T>{
 
     public int numEdge(){
         int countEdge=0;
-        for(int i=0; i< (this.listaAdiacenza).size(); i++){
-            countEdge += (this.listaAdiacenza).get(i).size();
+        for(int i = 0; i < (this.listaAdiacenza).size(); i++){
+            countEdge += (this.listaAdiacenza).get(i).size() - 1;
         }
         return countEdge;
     }
@@ -169,10 +169,9 @@ public class Grafo<K, T>{
             throw new GrafoException("vertice inesistente");
         int index = (this.indecesMap).get(vertex);
         ArrayList<K> adj = new ArrayList<>();
-        for(int i = 0; i < (this.listaAdiacenza).get(index).size(); i++){
+        for(int i = 1; i < (this.listaAdiacenza).get(index).size(); i++){
             adj.add((this.listaAdiacenza).get(index).get(i).getName());
         }
-        System.out.println("adiacenti di monteriggioni" + adj);
         return adj;
     }
     
@@ -211,10 +210,17 @@ public class Grafo<K, T>{
     }
     //Recupero archi
     //idea fare una matrice di ritorno
-    public ArrayList<ArrayList<K>> getEdges(){
-        ArrayList<K> vertices = new ArrayList<>();
+    public ArrayList< ArrayList<K> > getEdges(){
+        ArrayList< ArrayList<K> > vertices = new ArrayList<>();
+        ArrayList<K> edge = null;
         for(int i = 0; i < (this.listaAdiacenza).size(); i++){
-            vertices.add((this.listaAdiacenza).get(i).get(0).getName());
+            K app = (this.listaAdiacenza).get(i).getFirst().getName();
+            for(int j = 1; j < (this.listaAdiacenza).get(i).size(); j++){
+                edge = new ArrayList<>();
+                edge.add(app);
+                edge.add((this.listaAdiacenza).get(i).get(j).getName());
+                vertices.add(edge);
+            }
         }
         return vertices;
     }

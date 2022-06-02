@@ -38,27 +38,23 @@ public class GrafoUsage{
         Grafo<CityName, Distance> maps = new Grafo<>(0);
         ArrayList<CityName> adj = new ArrayList<>();
         loadMap(filepath, maps);
-        maps.printMap(); //momentaneo
+        //maps.printMap(); //momentaneo
         /*System.out.println(maps.containsNode(new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio"), new Distance(4040.6818551679175)));
         */
-        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio")));
-        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("casa nagli")));
-        System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("staggia")));
-        System.out.println("Nodi nel grafo: " + maps.getVertices());
+        //System.out.println("La mappa contiene l'arco tra Francavilla Fontana e Villa Castelli: " + maps.containsEdge(new CityName("francavilla fontana"), new CityName("villa castelli")));
+        //System.out.println("La mappa contiene l'arco tra Torino e Lingotto: " + maps.containsEdge(new CityName("torino"), new CityName("lingotto")));
+        //System.out.println("La mappa contiene l'arco tra Napoli e Pianura: " + maps.containsEdge(new CityName("napoli"), new CityName("pianura")));
+        /*System.out.println("archi nella mappa: " + maps.getEdges());
+        System.out.println("Nodi nel grafo: " + maps.getVertices());*/
         System.out.println("Numero archi: " + maps.numEdge());
         System.out.println("Numero di vertici: " + maps.numVertex());
-        adj = maps.getAdj(new CityName("monteriggioni"));
-        System.out.println("adiacenti di monteriggioni" + adj);
-        System.out.println("peso: " + maps.getLabel(new CityName("petraio"), new CityName("monteriggioni")));
-        System.out.println("peso: " + maps.getLabel(new CityName("monteriggioni"), new CityName("petraio")));
-        //maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"));
-        maps.removeVertex(new CityName("monteriggioni"));
-        maps.printMap(); //momentaneo
-        System.out.println("Numero archi: "+ maps.numEdge());
-        System.out.println("Numero di vertici: "+ maps.numVertex());
-        adj = maps.getAdj(new CityName("monteriggioni"));
-        System.out.println("adiacenti di monteriggioni" + adj);
+        /*adj = maps.getAdj(new CityName("villa castelli"));
+        System.out.println("adiacenti di villa castelli" + adj);*/
+        //System.out.println("peso: " + maps.getLabel(new CityName("villa castelli"), new CityName("francavilla fontana")));
+        //System.out.println("peso: " + maps.getLabel(new CityName("torino"), new CityName("lingotto")));
+        //maps.removeVertex(new CityName("monteriggioni"));
+        //maps.printMap(); //momentaneo
     }
     
     public static void main(String[] args) throws IOException, GrafoException, Exception{
@@ -71,4 +67,4 @@ public class GrafoUsage{
 
 
 // java -jar ./build/Grafo.jar /home/federico/Documents/es4_dataset/graph_prova.csv
-// java -jar ./build/Grafo_Test.jar
+// java -jar ./build/GrafoTests.jar
