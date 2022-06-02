@@ -13,12 +13,15 @@ Milano, Vercelli, 2233.5
 Milano, Roma, 3000.89
 
 [Milano,  null],      [Roma, null]
-|                   |
-[Torino, 5125.64]   [Milano, 3000.89]
+|                     |
+[Torino, 5125.64]     [Milano, 3000.89]
 |
 [Vercelli, 2233.5]
 |
 [Roma, 3000.89]
+
+
+[Roma, null]
 */
 
 public class Grafo<K, T>{
@@ -102,28 +105,7 @@ public class Grafo<K, T>{
         return res;
     }
     
-    /* Controlliamo veramente se l'arco esiste in quel verso */
-    /*public void removeEdge(K vertexFrom, K vertexTo, T weight) throws GrafoException{
-        if(containsEdge(vertexFrom, vertexTo) == false)
-            throw new GrafoException("arco inesistente");
-        int indexFrom=0, indexEdge=0;
-        boolean flag = false;
-        indexFrom = (this.indecesMap).get(vertexFrom);
-        if(mode == 0){
-            if(!((this.listaAdiacenza).get(indexFrom).contains(new Node(weight,vertexTo)))){
-                indexFrom = (this.indecesMap).get(vertexTo);
-                indexEdge = (this.listaAdiacenza).get(indexFrom).indexOf(new Node(weight,vertexFrom));
-                (this.listaAdiacenza).get(indexFrom).remove(indexEdge);
-                flag = true; // ci serve per non entrare nell'if se abbiamo già rimosso l'arco
-            }
-        } 
-        if(flag == false){
-            indexEdge = (this.listaAdiacenza).get(indexFrom).indexOf(new Node(weight,vertexTo));
-            (this.listaAdiacenza).get(indexFrom).remove(indexEdge);
-        }
-    }*/
-
-
+    /*TITOLO: Controlliamo veramente se l'arco esiste in quel verso */
     public void removeEdge(K vertexFrom, K vertexTo) throws GrafoException{
         if(containsEdge(vertexFrom, vertexTo) == false)
             throw new GrafoException("arco inesistente");
@@ -155,15 +137,18 @@ public class Grafo<K, T>{
             (this.listaAdiacenza).get(indexFrom).remove(i);
         }
     }
-    // da completare
+   
     public void removeVertex(K vertex) throws GrafoException{
         if(containsNode(vertex) == false)
             throw new GrafoException("vertice inesistente");
         int index = (this.indecesMap).get(vertex);
-        (this.listaAdiacenza).remove(index);
+        K vertexTo = null;
         for(int i = 0; i < listaAdiacenza.size(); i++){
-
+            vertexTo = listaAdiacenza.get(i).getFirst().getName();
+            if(containsEdge(vertex,vertexTo))
+                removeEdge(vertex,vertexTo );
         }
+        (this.listaAdiacenza).remove(index);
         (this.indecesMap).remove(vertex);
     }
 
@@ -190,7 +175,7 @@ public class Grafo<K, T>{
         System.out.println("adiacenti di monteriggioni" + adj);
         return adj;
     }
-    //da completare
+    
     public T getLabel(K vertexFrom, K vertexTo) throws GrafoException{
         if (containsEdge(vertexFrom,vertexTo) == false)
             throw new GrafoException("Arco inesistente");
@@ -214,6 +199,24 @@ public class Grafo<K, T>{
             }
         }
         return res;
+    }
+
+    //Recupero nodi
+    public ArrayList<K> getVertices(){
+        ArrayList<K> vertices = new ArrayList<>();
+        for(int i = 0; i < (this.listaAdiacenza).size(); i++){
+            vertices.add((this.listaAdiacenza).get(i).get(0).getName());
+        }
+        return vertices;
+    }
+    //Recupero archi
+    //idea fare una matrice di ritorno
+    public ArrayList<ArrayList<K>> getEdges(){
+        ArrayList<K> vertices = new ArrayList<>();
+        for(int i = 0; i < (this.listaAdiacenza).size(); i++){
+            vertices.add((this.listaAdiacenza).get(i).get(0).getName());
+        }
+        return vertices;
     }
 
     public void printMap(){

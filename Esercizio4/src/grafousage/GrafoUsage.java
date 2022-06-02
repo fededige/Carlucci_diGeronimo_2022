@@ -45,13 +45,15 @@ public class GrafoUsage{
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("casa nagli")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("staggia")));
+        System.out.println("Nodi nel grafo: " + maps.getVertices());
         System.out.println("Numero archi: " + maps.numEdge());
         System.out.println("Numero di vertici: " + maps.numVertex());
         adj = maps.getAdj(new CityName("monteriggioni"));
         System.out.println("adiacenti di monteriggioni" + adj);
         System.out.println("peso: " + maps.getLabel(new CityName("petraio"), new CityName("monteriggioni")));
         System.out.println("peso: " + maps.getLabel(new CityName("monteriggioni"), new CityName("petraio")));
-        maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"));
+        //maps.removeEdge(new CityName("petraio"), new CityName("monteriggioni"));
+        maps.removeVertex(new CityName("monteriggioni"));
         maps.printMap(); //momentaneo
         System.out.println("Numero archi: "+ maps.numEdge());
         System.out.println("Numero di vertici: "+ maps.numVertex());
