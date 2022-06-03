@@ -73,19 +73,22 @@ public class HeapMinimo<T>{
     }
 
     public T getLeftChild(T element) throws HeapMinimoException {
+        if(containsValue(element) == false)
+            throw new HeapMinimoException("Element not exists");
         int index = (this.indicesMap).get(element);
         return getElement(getLeftIndex(index));
     }
-
+   
     public T getRightChild(T element) throws HeapMinimoException {
+        if(containsValue(element) == false )
+            throw new HeapMinimoException("Element not exists");
         int index = (this.indicesMap).get(element);
         return getElement(getRightIndex(index));
     }
 
     public void extractMin() throws HeapMinimoException {
-        if(isEmpty()){
+        if(isEmpty())
             throw new HeapMinimoException("Heap is empty");
-        }
         int lastIndex = (this.array).size() - 1;
         (this.indicesMap).remove(getElement(0)); //rimuoviamo dalla Map il primo elemento
         (this.array).set(0, getElement(lastIndex)); //mettiamo l'ultimo elemento in prima posizione
@@ -162,5 +165,10 @@ public class HeapMinimo<T>{
             index = getParentIndex(index);
         }
     }
+    
+    public boolean containsValue(T value){
+        return (this.indicesMap).containsKey(value);
+    }
 }
+
 //https://docs.oracle.com/javase/7/docs/api/java/util/IdentityHashMap.html
