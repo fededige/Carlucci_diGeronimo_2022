@@ -61,7 +61,8 @@ public class HeapMinimoUsage {
         res = heapminimo.getRightChild(arrayelement.get(6));
         System.out.println("\nElemento destro di "+ el.getIntegerField() +": "+res.getIntegerField());
 
-        heapminimo.extractMin();
+        res = heapminimo.extractMin();
+        System.out.println("\n Minimo nell'heap: " + res.getIntegerField());
         printHeap(heapminimo);
 
         el = arrayelement.get(6);
@@ -77,6 +78,9 @@ public class HeapMinimoUsage {
         el = arrayelement.get(0);
         res = heapminimo.getRightChild(arrayelement.get(0));
         System.out.println("\nElemento destro di "+ el.getIntegerField() +": "+res.getIntegerField());
+
+        res = heapminimo.extractMin();
+        System.out.println("\n Minimo nell'heap: " + res.getIntegerField());
     }
   
     public static void main(String[] args) throws IOException, HeapMinimoException, Exception {

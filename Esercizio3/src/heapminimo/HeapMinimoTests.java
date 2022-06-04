@@ -109,14 +109,26 @@ public class HeapMinimoTests {
     heapminimo.HeapInsert(i2);
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
-    heapminimo.extractMin();
+    Integer res = heapminimo.extractMin();
 
     Integer[] arrActual = new Integer[2];
 
     arrActual[0] = heapminimo.getElement(0);
     arrActual[1] = heapminimo.getElement(1);
-
     assertArrayEquals(arrExpected, arrActual);
+  }
+
+  @Test
+  public void testextractMin_return_threeEl() throws Exception{
+
+    Integer[] arrExpected = {i2, i3};
+
+    heapminimo.HeapInsert(i2);
+    heapminimo.HeapInsert(i1);
+    heapminimo.HeapInsert(i3);
+    Integer res = heapminimo.extractMin();
+    
+    assertTrue(res==i1);
   }
 
   @Test

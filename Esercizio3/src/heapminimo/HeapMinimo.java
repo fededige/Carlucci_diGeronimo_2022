@@ -86,15 +86,18 @@ public class HeapMinimo<T>{
         return getElement(getRightIndex(index));
     }
 
-    public void extractMin() throws HeapMinimoException {
+    public T extractMin() throws HeapMinimoException {
         if(isEmpty())
             throw new HeapMinimoException("Heap is empty");
+        T res = getElement(0);
         int lastIndex = (this.array).size() - 1;
         (this.indicesMap).remove(getElement(0)); //rimuoviamo dalla Map il primo elemento
         (this.array).set(0, getElement(lastIndex)); //mettiamo l'ultimo elemento in prima posizione
         (this.array).remove(lastIndex);
         
         Heapify(0);
+        
+        return res;
     }
 
     private void Heapify(int index) throws HeapMinimoException {
