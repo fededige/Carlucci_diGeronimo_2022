@@ -20,11 +20,11 @@ public class Node<T, K>{
     }
 
     public K getPi(){
-        return this.Pi;
+        return this.pi;
     }
 
     public void setPi(K newPi){
-        this.Pi = newPi;
+        this.pi = newPi;
     }
     
     public void setWeight(T newWeight){
