@@ -89,6 +89,12 @@ public class HeapMinimo<T>{
     public T extractMin() throws HeapMinimoException {
         if(isEmpty())
             throw new HeapMinimoException("Heap is empty");
+        if((this.array).size() == 1){
+            T res = getElement(0);
+            (this.array).remove(res);
+            (this.indicesMap).remove(res);
+            return res;
+        }
         T res = getElement(0);
         int lastIndex = (this.array).size() - 1;
         (this.indicesMap).remove(getElement(0)); //rimuoviamo dalla Map il primo elemento

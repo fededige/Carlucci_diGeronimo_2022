@@ -8,4 +8,4 @@ public class RecordComparatorIntField implements Comparator<Record>{
     int result = Integer.valueOf(r1.getIntegerField()).compareTo(r2.getIntegerField());
     return result;
   }
-}
+} 

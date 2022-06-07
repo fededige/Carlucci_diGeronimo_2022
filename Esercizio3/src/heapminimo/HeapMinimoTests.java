@@ -131,6 +131,13 @@ public class HeapMinimoTests {
     assertTrue(res==i1);
   }
 
+   @Test
+  public void testextractMin_oneEl() throws Exception{
+    heapminimo.HeapInsert(i2);
+    Integer res = heapminimo.extractMin();
+    assertEquals(i2, res);
+  }
+
   @Test
   public void testgetLeftChild_threeEl() throws Exception{
 
@@ -169,6 +176,5 @@ public class HeapMinimoTests {
 
     assertArrayEquals(arrExpected, arrActual);
   }
-
 }
 
