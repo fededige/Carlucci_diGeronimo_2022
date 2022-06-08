@@ -139,11 +139,10 @@ public class HeapMinimo<T>{
     */
 
     public T getElement(int index) throws HeapMinimoException {
-        if(index < 0 || index > size())
-            throw new HeapMinimoException("Index "+index+"is out of the array bounds");
+        if(index < 0 || index >= size())
+            throw new HeapMinimoException("Index " + index + "is out of the array bounds");
         return (this.array).get(index);
-    }    
-    
+    }
     
     public void subtractValue(T oldValue, T newValue) throws HeapMinimoException {
         if((this.comparator).compare(oldValue, newValue) == -1)
@@ -151,6 +150,7 @@ public class HeapMinimo<T>{
             
         int index = (this.indicesMap).get(oldValue);
         (this.array).set(index, newValue);
+        //System.out.println(index);
         (this.indicesMap).remove(oldValue); //togliamo dalla Map il vecchio elemento
         (this.indicesMap).put(newValue, index); //aggiungiamo alla Map il nuovo valore
         while (index > 0 && ((this.comparator).compare(getElement(getParentIndex(index)), getElement(index)) == 1)){
@@ -161,6 +161,8 @@ public class HeapMinimo<T>{
             this.indicesMap.put(temp, index);
             index = getParentIndex(index);
         }
+        /*System.out.println(indicesMap);
+        System.out.println("size dell'heap" + size());*/
     }
 
     public void subtractValue(int index, T newValue) throws HeapMinimoException {

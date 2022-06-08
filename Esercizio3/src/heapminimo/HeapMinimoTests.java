@@ -119,6 +119,22 @@ public class HeapMinimoTests {
   }
 
   @Test
+  public void testextractMin_twoEl() throws Exception{
+
+    Integer[] arrExpected = {i2};
+
+    heapminimo.HeapInsert(i2);
+    heapminimo.HeapInsert(i1);
+    Integer res = heapminimo.extractMin();
+
+    Integer[] arrActual = new Integer[1];
+
+    arrActual[0] = heapminimo.getElement(0);
+    
+    assertArrayEquals(arrExpected, arrActual);
+  }
+
+  @Test
   public void testextractMin_return_threeEl() throws Exception{
 
     Integer[] arrExpected = {i2, i3};
@@ -166,13 +182,44 @@ public class HeapMinimoTests {
     heapminimo.HeapInsert(i2);
     heapminimo.HeapInsert(i1);
     heapminimo.HeapInsert(i3);
-    heapminimo.subtractValue(0, newV);
+    heapminimo.subtractValue(i1, newV);
 
     Integer[] arrActual = new Integer[3];
 
     arrActual[0] = heapminimo.getElement(0);
     arrActual[1] = heapminimo.getElement(1);
     arrActual[2] = heapminimo.getElement(2);
+
+    assertArrayEquals(arrExpected, arrActual);
+  }
+
+  @Test
+  public void testsubtractValue_oneEl() throws Exception{
+    Integer newV = -15;
+    Integer[] arrExpected = {newV};
+
+    heapminimo.HeapInsert(i2);
+    heapminimo.subtractValue(i2, newV);
+
+    Integer[] arrActual = new Integer[1];
+
+    arrActual[0] = heapminimo.getElement(0);
+    assertArrayEquals(arrExpected, arrActual);
+  }
+
+  @Test
+  public void testsubtractValue_twoEl() throws Exception{
+    Integer newV = -15;
+    Integer[] arrExpected = {newV, i1};
+
+    heapminimo.HeapInsert(i2);
+    heapminimo.HeapInsert(i1);
+    heapminimo.subtractValue(i2, newV);
+
+    Integer[] arrActual = new Integer[2];
+
+    arrActual[0] = heapminimo.getElement(0);
+    arrActual[1] = heapminimo.getElement(1);
 
     assertArrayEquals(arrExpected, arrActual);
   }
