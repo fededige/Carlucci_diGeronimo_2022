@@ -39,25 +39,17 @@ public class DijkstraUsage{
     }
 
     private static void testFunction(String filepath) throws IOException, HeapMinimoException, GrafoException{
-        Grafo<CityName, Double> maps = new Grafo<>(0);
+        Grafo<CityName, Double> maps = new Grafo<>(1);
         ArrayList<CityName> adj = new ArrayList<>();
         loadMap(filepath, maps);
-
         /*System.out.println("peso: " + maps.getLabel(new CityName("petraio"), new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("petraio"), new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio")));*/
         //System.out.println(maps.getAdj(new CityName("abbadia")));
 
-
-
-
-
-
-
-
-
         Dijkstra<CityName> dijkstra = new Dijkstra<>(maps);
         ArrayList<Vertex<CityName>> shortestpath = dijkstra.ShortestPath(new CityName("torino"));
+        System.out.println("calcolo finito");
         System.out.println(shortestpath);
     }
 

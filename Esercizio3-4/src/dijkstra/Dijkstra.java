@@ -30,6 +30,8 @@ public class Dijkstra<K>{
         /*if(grafo.containsNode(source) == false)
             //throw new ...*/
         ArrayList<K> tempVertices = grafo.getVertices();
+        /*System.out.println("dimensione di tempV: " + tempVertices.size());
+        System.out.println("tempVertices" + tempVertices);*/
         
         for(int i = 0;i < tempVertices.size(); i++){
             if(tempVertices.get(i).equals(source)){
@@ -41,6 +43,14 @@ public class Dijkstra<K>{
                 (this.vertices).add(new Vertex(Double.POSITIVE_INFINITY, tempVertices.get(i), null));
             }
         }
+        /*System.out.println("MinPriorityQueue size: " + MinPriorityQueue.size());
+        System.out.println("MinPriorityQueue size: " + MinPriorityQueue.getElement(0));
+        System.out.println("MinPriorityQueue size: " + MinPriorityQueue.getElement(1));*/
+        /*System.out.println("MinPriorityQueue");
+        for(int i = 0; i < MinPriorityQueue.size(); i++){
+            System.out.println(MinPriorityQueue.getElement(i));
+        }*/
+        
     }
    
     public ArrayList<Vertex<K>> ShortestPath(K source) throws HeapMinimoException, GrafoException{
@@ -50,6 +60,7 @@ public class Dijkstra<K>{
         int index=0,k=0,j=0;
         boolean flag=false;
         insertMPQ(source);
+        //System.out.println(MinPriorityQueue);
         while(MinPriorityQueue.isEmpty() == false){
             currentNode = MinPriorityQueue.extractMin();
             currentWeight = currentNode.getWeight();
@@ -67,8 +78,9 @@ public class Dijkstra<K>{
                 if(flag == true){
                 //System.out.println("elemento nella mq " + MinPriorityQueue.getElement(j).getName());
                     /*System.out.println("peso" + currentWeight);
-                    System.out.println("peso dell'arco: " + grafo.getLabel( currentNode.getName(), adj.get(i) ));
-                    System.out.println("peso nella MQ: " + (MinPriorityQueue.getElement(j).getName()));*/
+                    System.out.println("peso nella MQ: " + (MinPriorityQueue.getElement(j).getName()));
+                    System.out.print("peso dell'arco: " + currentNode.getName() + " " + adj.get(i));
+                    System.out.println(": " + grafo.getLabel( currentNode.getName(), adj.get(i) ));*/
                     if((currentWeight + grafo.getLabel( currentNode.getName(), adj.get(i) )) < ((Double)MinPriorityQueue.getElement(j).getWeight())){
                         for(k = 0; k < vertices.size(); k++){
                             //System.out.println("vertices: " + vertices.get(k).getName() + " currentNode: " + MinPriorityQueue.getElement(j).getName());
@@ -80,8 +92,13 @@ public class Dijkstra<K>{
                                 break;
                             }
                         }
+                        /*System.out.println("size: " + MinPriorityQueue.size());
+                        System.out.println(new Vertex(vertices.get(k).getWeight(),vertices.get(k).getName(), vertices.get(k).getPi()));*/
                         MinPriorityQueue.subtractValue(MinPriorityQueue.getElement(j), new Vertex(vertices.get(k).getWeight(),vertices.get(k).getName(), vertices.get(k).getPi()));
-
+                        /*System.out.println("MinPriorityQueue DOPO");
+                        for(int l = 0; l < MinPriorityQueue.size(); l++){
+                            System.out.println(MinPriorityQueue.getElement(l));
+                        }*/
                     }
                 }
             }

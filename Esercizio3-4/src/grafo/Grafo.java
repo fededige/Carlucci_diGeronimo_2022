@@ -178,9 +178,9 @@ public class Grafo<K, T>{
         for(int i = 1; i < (this.listaAdiacenza).get(index).size(); i++){
             adj.add((this.listaAdiacenza).get(index).get(i).getName());
         }
-        if(adj.size() == 0){
+        if(mode == 1){
             for(int j = 0; j < (this.listaAdiacenza).size(); j++){
-                for(int k = 0; k < (this.listaAdiacenza).get(j).size(); k++){
+                for(int k = 1; k < (this.listaAdiacenza).get(j).size(); k++){
                     if((this.listaAdiacenza).get(j).get(k).getName().equals(vertex)){
                         adj.add((this.listaAdiacenza).get(j).get(0).getName());
                     }
