@@ -45,7 +45,15 @@ public class DijkstraUsage{
         /*System.out.println("peso: " + maps.getLabel(new CityName("petraio"), new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("petraio"), new CityName("monteriggioni")));
         System.out.println(maps.containsEdge(new CityName("monteriggioni"), new CityName("petraio")));*/
-        //System.out.println(maps.getAdj(new CityName("abbadia")));
+        /*System.out.println(maps.getAdj(new CityName("a")));
+        System.out.println(maps.getAdj(new CityName("b")));
+        System.out.println(maps.getAdj(new CityName("c")));
+        System.out.println(maps.getAdj(new CityName("d")));
+        System.out.println(maps.getAdj(new CityName("e")));
+        System.out.println(maps.getAdj(new CityName("f")));
+        System.out.println(maps.getAdj(new CityName("g")));
+        System.out.println(maps.getAdj(new CityName("h")));*/
+
 
         Dijkstra<CityName> dijkstra = new Dijkstra<>(maps);
         ArrayList<Vertex<CityName>> shortestpath = dijkstra.ShortestPath(new CityName("torino"));

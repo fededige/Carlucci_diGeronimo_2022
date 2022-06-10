@@ -49,25 +49,24 @@ public class Grafo<K, T>{
             (this.listaAdiacenza).get(indexFrom).add(new Node(null, nameFrom));
             (this.indecesMap).put(nameFrom, indexFrom);
             //System.out.println(indecesMap);
-        }
+        } 
     }
 
     public void addEdge(K nameFrom, K nameTo, T weight) throws GrafoException{
-        int indexFrom;
         if((this.indecesMap).containsKey(nameFrom) == false){
             throw new GrafoException("Nodo partenza inesistente");
         }
         if(containsNode(nameTo) == false){
             addNode(nameTo);
         }
+        int indexFrom;
         indexFrom = indecesMap.get(nameFrom);
         listaAdiacenza.get(indexFrom).add(new Node(weight, nameTo));
-        /*
+        
         if(mode == 1 ){
-
-        indexFrom = indecesMap.get(nameTo);
-        listaAdiacenza.get(indexFrom).add(new Node(weight, nameFrom));
-        }*/
+            indexFrom = indecesMap.get(nameTo);
+            listaAdiacenza.get(indexFrom).add(new Node(weight, nameFrom));
+        }
     }
 
     public boolean containsNode(K vertex){
@@ -100,14 +99,14 @@ public class Grafo<K, T>{
                 res = true;
             }
         }
-        if(mode == 1 && res == false){//grafo indiretto
+        /*if(mode == 1 && res == false){//grafo indiretto
             int indexTo = (this.indecesMap).get(vertexTo);
             for(int i = 0; i < (this.listaAdiacenza).get(indexTo).size(); i++){
                 if((this.listaAdiacenza).get(indexTo).get(i).getName().equals(vertexFrom)){
                     res = true;
                 }
             }
-        }
+        }*/
         return res;
     }
     
@@ -118,7 +117,7 @@ public class Grafo<K, T>{
         int indexFrom=0, indexEdge=0,i=0;
         boolean flag = false;
         indexFrom = (this.indecesMap).get(vertexFrom);
-        if(mode == 1){
+        /*if(mode == 1){
             boolean exist = false;
             for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size() && !exist; i++){
                 exist = exist || (this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo);
@@ -136,11 +135,26 @@ public class Grafo<K, T>{
         } 
         if(flag == false){
             for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
-                    if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
-                        break;
-                    }
+                if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
+                    break;
                 }
+            }
             (this.listaAdiacenza).get(indexFrom).remove(i);
+        }*/
+        for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
+            if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
+                break;
+            }
+        }
+        (this.listaAdiacenza).get(indexFrom).remove(i);
+        if(mode == 1){
+           int indexTo = (this.indecesMap).get(vertexTo);
+           for(i = 0; i < (this.listaAdiacenza).get(indexTo).size(); i++){
+                if((this.listaAdiacenza).get(indexTo).get(i).getName().equals(vertexFrom)){
+                    break;
+                }
+            }
+            (this.listaAdiacenza).get(indexTo).remove(i);
         }
     }
    
@@ -167,10 +181,13 @@ public class Grafo<K, T>{
         for(int i = 0; i < (this.listaAdiacenza).size(); i++){
             countEdge += (this.listaAdiacenza).get(i).size() - 1;
         }
+        if(mode == 1)
+            return countEdge/2;
+
         return countEdge;
     }
 
-    public ArrayList<K> getAdj(K vertex) throws GrafoException{
+    public ArrayList<K> getAdj(K vertex) throws GrafoException{ //O(1)
         if(containsNode(vertex) == false)
             throw new GrafoException("vertice inesistente");
         int index = (this.indecesMap).get(vertex);
@@ -178,15 +195,15 @@ public class Grafo<K, T>{
         for(int i = 1; i < (this.listaAdiacenza).get(index).size(); i++){
             adj.add((this.listaAdiacenza).get(index).get(i).getName());
         }
-        if(mode == 1){
-            for(int j = 0; j < (this.listaAdiacenza).size(); j++){
+        /*if(mode == 1){
+            for(int j = 0; j < (this.listaAdiacenza).size(); j++){ 
                 for(int k = 1; k < (this.listaAdiacenza).get(j).size(); k++){
                     if((this.listaAdiacenza).get(j).get(k).getName().equals(vertex)){
                         adj.add((this.listaAdiacenza).get(j).get(0).getName());
                     }
                 }
             }
-        }
+        }*/
         return adj;
     }
     
@@ -196,22 +213,22 @@ public class Grafo<K, T>{
         int i=0;
         int indexFrom = 0;
         T res = null;
-        boolean flag=false;
+        //boolean flag=false;
         indexFrom = (this.indecesMap).get(vertexFrom);
         for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
             if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
                 res = (this.listaAdiacenza).get(indexFrom).get(i).getWeight();
-                flag = true;
+                //flag = true;
             }
         }
-        if(!flag){
+        /*if(!flag){
             indexFrom = (this.indecesMap).get(vertexTo);
             for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
                 if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexFrom)){
                     res =  (this.listaAdiacenza).get(indexFrom).get(i).getWeight();
                 }
             }
-        }
+        }*/
         return res;
     }
 
