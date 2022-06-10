@@ -36,7 +36,7 @@ public class HeapMinimo<T>{
         while(index > 0 && ((this.comparator).compare(getElement(index), getElement((getParentIndex(index)))) == -1)){
             T temp = getElement(index);
             (this.array).set(index, getElement((getParentIndex(index))));
-            (this.indicesMap).replace(getElement((getParentIndex(index))), index); //utilizzare put invece che replace
+            (this.indicesMap).put(getElement((getParentIndex(index))), index);
             (this.array).set(getParentIndex(index), temp);
             index = getParentIndex(index);
         }
