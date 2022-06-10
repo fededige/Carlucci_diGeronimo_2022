@@ -36,7 +36,7 @@ public class HeapMinimo<T>{
         while(index > 0 && ((this.comparator).compare(getElement(index), getElement((getParentIndex(index)))) == -1)){
             T temp = getElement(index);
             (this.array).set(index, getElement((getParentIndex(index))));
-            (this.indicesMap).replace(getElement((getParentIndex(index))), index); //utilizzare put invece che replace
+            (this.indicesMap).put(getElement((getParentIndex(index))), index); //utilizzare put invece che replace
             (this.array).set(getParentIndex(index), temp);
             index = getParentIndex(index);
         }
@@ -99,6 +99,7 @@ public class HeapMinimo<T>{
         int lastIndex = (this.array).size() - 1;
         (this.indicesMap).remove(getElement(0)); //rimuoviamo dalla Map il primo elemento
         (this.array).set(0, getElement(lastIndex)); //mettiamo l'ultimo elemento in prima posizione
+        (this.indicesMap).put(getElement(0), 0);
         (this.array).remove(lastIndex);
         
         Heapify(0);
@@ -163,18 +164,6 @@ public class HeapMinimo<T>{
         }
         /*System.out.println(indicesMap);
         System.out.println("size dell'heap" + size());*/
-    }
-
-    public void subtractValue(int index, T newValue) throws HeapMinimoException {
-        if((this.comparator).compare(getElement(index), newValue) == -1)
-            throw new HeapMinimoException("newValue cannot be greater than oldValue");
-        (this.array).set(index, newValue);
-        while (index > 0 && ((this.comparator).compare(getElement(getParentIndex(index)), getElement(index)) == 1)){
-            T temp = getElement(getParentIndex(index));
-            (this.array).set(getParentIndex(index), getElement(index));
-            (this.array).set(index, temp);
-            index = getParentIndex(index);
-        }
     }
     
     public boolean containsValue(T value){
