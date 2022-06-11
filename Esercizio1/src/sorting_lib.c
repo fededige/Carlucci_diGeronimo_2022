@@ -154,11 +154,12 @@ Array *quicksort(Array *array, int mode){
   if(mode == 0){
     choose_random_pivot = 0;
   }else if(mode == 1){
+    long int seed = time(NULL);
+    srand((unsigned int) seed); /*main*/
     choose_random_pivot = 1;
   }else{
     return NULL;
   }
-
   return Wquicksort(array, 0, (long) array->size-1);
 }
 
@@ -167,7 +168,7 @@ static Array *Wquicksort(Array *array, long p, long r){
   if(r - p >= 1){
     q = partition(array, p, r);
     //printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);
-    if(q > p){/*q > 1*/
+    if(q > p){/*q > 1(primo elemento)  */
       array = Wquicksort(array, p, q - 1);
     }
     if(q < r){
@@ -182,8 +183,6 @@ static long partition(Array *array, long p, long r){
   long i = p + 1, j = r;
   if(choose_random_pivot == 0){
     long rand_pivot;
-    long int seed = time(NULL);
-    srand((unsigned int) seed);
     /*if(p >= r){ r - p <= 1
       return j;
     }*/
@@ -192,7 +191,8 @@ static long partition(Array *array, long p, long r){
   }
 
   while(i <= j){
-    if(array->precedes(array->array[i], array->array[p]) == -1 || array->precedes(array->array[i], array->array[p]) == 0){//A[i] <= A[p] /*cambiato*/
+    int res=array->precedes(array->array[i], array->array[p]);
+    if(res == -1 || res == 0){//A[i] <= A[p] /*cambiato*/
       i++;
     }
     else{
@@ -200,13 +200,13 @@ static long partition(Array *array, long p, long r){
         j--;         
       }
       else{
-        array = swap_val(array, i, j); /* verificare j o j - 1 cambiato*/
+        array = swap_val(array, i, j); 
         i++;
         j--;
       }
     }                 
   }
-  array = swap_val(array, p, j); /*cambiato*/
+  array = swap_val(array, p, j); 
   return j;
 }
 
