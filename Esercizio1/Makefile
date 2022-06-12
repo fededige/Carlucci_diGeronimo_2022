@@ -34,4 +34,4 @@ clean:
 	$(RM) bin/*
 
 run: bin/Sort_main
-	time ./bin/Sort_main "/home/federico/Documents/es1_dataset/records.csv" "/home/federico/Documents/es1_dataset/out.csv" "2" "std_quicksort"
+	./bin/Sort_main "/home/federico/Documents/es1_dataset/records.csv" "/home/federico/Documents/es1_dataset/out.csv" "2" "rand_quicksort"

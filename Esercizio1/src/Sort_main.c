@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "SortingLib.h"
 #include "GenericDynamicArray_lib.h"
+
+#define BILLION  1000000000.0
 
 #define PROGRAM "/bin/sort_main"
 
@@ -99,6 +102,8 @@ static void test_with_comparison_function(const char *file_name, const char *fil
     Array *array = array_create(compare);
     load_array(file_name, array);
     
+    struct timespec start, end;
+    clock_gettime(CLOCK_REALTIME, &start);
     if(strcmp(mode, "rand_quicksort") == 0){
         quicksort(array->array, 0, array->size, array->precedes);
     }
@@ -112,8 +117,14 @@ static void test_with_comparison_function(const char *file_name, const char *fil
         free_array(array);
         exit(EXIT_FAILURE);
     } 
-    
+    clock_gettime(CLOCK_REALTIME, &end);
     printf("array sorted");
+
+    // time_spent = end - start
+    double time_spent = (double)(end.tv_sec - start.tv_sec) + (double)(end.tv_nsec - start.tv_nsec) / BILLION;
+ 
+    printf("The elapsed time is %f seconds", time_spent);
+
     print_array(array, out);
     free_array(array);
 }
