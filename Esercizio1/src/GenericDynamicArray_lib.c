@@ -1,4 +1,4 @@
-#include "DynamicArray_lib.h"
+#include "GenericDynamicArray_lib.h"
 #include <stdlib.h>
 #include <stdio.h>
 

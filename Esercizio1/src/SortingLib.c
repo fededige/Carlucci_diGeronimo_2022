@@ -1,4 +1,4 @@
-#include "sorting_lib.h"
+#include "SortingLib.h"
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
@@ -75,27 +75,24 @@ static void Wquicksort(void **array, long p, long r, int (*precedes)(void*, void
     long q;
     if(r - p >= 1){
         q = partition(array, p, r, precedes);
-        //printf("PRIMA: p: %lu, q: %lu, r: %lu \n", p,q, r);
         if(q > p){/*q > 1*/
             Wquicksort(array, p, q - 1, precedes);
         }
         if(q < r){
             Wquicksort(array, q + 1, r, precedes);
         }
-        //printf("DOPO: p: %lu, q: %lu, r: %lu \n", p, q, r);
     }
 }
 
 static long partition(void **array, long p, long r, int (*precedes)(void*, void*)){
     long i = p + 1, j = r;
     if(choose_random_pivot == 0){
-        long rand_pivot;
-        rand_pivot = (long)rand() % (r-p+1) + p;
-        swap_val(array, rand_pivot, p); 
+        swap_val(array, (long)rand() % (r-p+1) + p, p); 
     }
 
     while(i <= j){
-        if(precedes(array[i],array[p]) == -1 || precedes(array[i], array[p]) == 0){//A[i] <= A[p] /cambiato/
+        int risultato=precedes(array[i],array[p]);
+        if(risultato == -1 || risultato == 0){//A[i] <= A[p] /cambiato/
             i++;
         }
         else{
@@ -112,6 +109,8 @@ static long partition(void **array, long p, long r, int (*precedes)(void*, void*
     swap_val(array, p, j);
     return j;
 }
+
+
 static void swap_val(void **array,  long a,  long b){
     if(array == NULL)
         return;

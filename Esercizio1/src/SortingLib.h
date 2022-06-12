@@ -1,4 +1,4 @@
-typedef struct _Array Array; /*VEDIAMO CHE FARE*/
+typedef struct _Array Array; 
 
 
 void bi_insertion_sort(void ** array, unsigned long size , int (*precedes)(void*, void*));

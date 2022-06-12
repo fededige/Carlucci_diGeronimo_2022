@@ -2,10 +2,13 @@ CC = gcc
 CFLAGS = -g -O1 -Wall -Wextra -Wpedantic -Wconversion
 COMMON_DEPS = src/*.h Makefile
 
-all: bin/sort_main #bin/sorting_lib_tests
+all: bin/Sort_main bin/GenericDynamicArray_tests bin/SortingLib_tests
 
-tests: bin/sorting_lib_tests
-	bin/sorting_lib_tests
+testsSortinglib: bin/SortingLib_tests
+	bin/SortingLib_tests
+
+testsDynamicArraylib: bin/GenericDynamicArray_tests
+	bin/GenericDynamicArray_tests
 
 create_folder:
 	mkdir -p build
@@ -17,15 +20,18 @@ build/%.o: src/%.c $(COMMON_DEPS)
 lib/%.o: src/%.c $(COMMON_DEPS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bin/sort_main: build/sorting_lib.o build/DynamicArray_lib.o build/sort_main.o $(COMMON_DEPS)
-	$(CC) -o bin/sort_main build/sorting_lib.o build/DynamicArray_lib.o build/sort_main.o
+bin/Sort_main: build/SortingLib.o build/GenericDynamicArray_lib.o build/Sort_main.o $(COMMON_DEPS)
+	$(CC) -o bin/Sort_main build/SortingLib.o build/GenericDynamicArray_lib.o build/Sort_main.o
 
-bin/sorting_lib_tests: build/sorting_lib_tests.o build/sorting_lib.o build/DynamicArray_lib.o lib/unity.o $(COMMON_DEPS)
-	$(CC) -o bin/sorting_lib_tests build/sorting_lib_tests.o build/sorting_lib.o build/DynamicArray_lib.o lib/unity.o
+bin/SortingLib_tests: build/SortingLib_tests.o build/SortingLib.o build/GenericDynamicArray_lib.o lib/unity.o $(COMMON_DEPS)
+	$(CC) -o bin/SortingLib_tests build/SortingLib_tests.o build/SortingLib.o build/GenericDynamicArray_lib.o lib/unity.o
+
+bin/GenericDynamicArray_tests: build/GenericDynamicArray_lib.o lib/unity.o build/GenericDynamicArray_tests.o $(COMMON_DEPS)
+	$(CC) -o bin/GenericDynamicArray_tests build/GenericDynamicArray_lib.o build/GenericDynamicArray_tests.o lib/unity.o
 
 clean:
 	$(RM) build/*
 	$(RM) bin/*
 
-run: bin/sort_main
-	./bin/sort_main "/home/federico/Documents/es1_dataset/records.csv" "/home/federico/Documents/es1_dataset/out.csv" "2" "rand_quicksort"
+run: bin/Sort_main
+	time ./bin/Sort_main "/home/federico/Documents/es1_dataset/records.csv" "/home/federico/Documents/es1_dataset/out.csv" "2" "std_quicksort"
