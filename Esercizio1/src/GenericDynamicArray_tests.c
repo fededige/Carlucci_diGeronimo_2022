@@ -3,7 +3,7 @@
 #include "../lib/unity.h"
 #include "GenericDynamicArray_lib.h"
 
-// precedence relation used in tests
+//relazione di precedenza
 static int precedes_int(void *i1_p, void *i2_p) {
     int *int1_p = (int*)i1_p;
     int *int2_p = (int*)i2_p;

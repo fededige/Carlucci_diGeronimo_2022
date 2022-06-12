@@ -33,9 +33,9 @@ public class GrafoTests {
 
   @Test
   public void testnumVertex_threeEl() throws GrafoException {
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     assertTrue(grafo.numVertex() == 3);
   }
 
@@ -46,9 +46,9 @@ public class GrafoTests {
 
   @Test
   public void testnumEdge_threeEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     grafo.addEdge(a, b, i1);
     grafo.addEdge(b, c, i2);
     grafo.addEdge(a, c, i3);
@@ -57,30 +57,30 @@ public class GrafoTests {
 
 
   @Test
-  public void testcontainsNode_oneEl() throws GrafoException{
-    grafo.addNode(a);
-    assertTrue(grafo.containsNode("A"));
+  public void testcontainsVertex_oneEl() throws GrafoException{
+    grafo.addVertex(a);
+    assertTrue(grafo.containsVertex("A"));
   }
 
   @Test
   public void testcontainsEdge_oneEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
     grafo.addEdge(a, b, i1);
     assertTrue(grafo.containsEdge("A", "B"));
   }
 
   @Test
   public void testremoveVertex_oneEl() throws GrafoException{
-    grafo.addNode(a);
+    grafo.addVertex(a);
     grafo.removeVertex("A");
-    assertTrue(grafo.containsNode("A") == false && grafo.numVertex() == 0);
+    assertTrue(grafo.containsVertex("A") == false && grafo.numVertex() == 0);
   }
 
   @Test
   public void testremoveEdge_oneEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
     grafo.addEdge(a, b, i1);
     grafo.removeEdge("A","B");
     assertTrue(grafo.containsEdge("A","B") == false && grafo.numEdge() == 0);
@@ -88,9 +88,9 @@ public class GrafoTests {
   
   @Test
   public void testgetAdj_threeEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     grafo.addEdge(a, b, i1);
     grafo.addEdge(b, c, i2);
     grafo.addEdge(a, c, i3);
@@ -103,9 +103,9 @@ public class GrafoTests {
 
   @Test
   public void testgetLabel_threeEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     grafo.addEdge(a, b, i1);
     grafo.addEdge(b, c, i2);
     grafo.addEdge(a, c, i3);
@@ -115,9 +115,9 @@ public class GrafoTests {
   
   @Test
   public void testgetVertices_threeEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     grafo.addEdge(a, b, i1);
     grafo.addEdge(b, c, i2);
     grafo.addEdge(a, c, i3);
@@ -130,9 +130,9 @@ public class GrafoTests {
 
   @Test
   public void testgetEdge_threeEl() throws GrafoException{
-    grafo.addNode(a);
-    grafo.addNode(b);
-    grafo.addNode(c);
+    grafo.addVertex(a);
+    grafo.addVertex(b);
+    grafo.addVertex(c);
     grafo.addEdge(a, b, i1);
     grafo.addEdge(b, c, i2);
     grafo.addEdge(a, c, i3);

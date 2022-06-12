@@ -3,10 +3,11 @@
 #include <stdio.h> 
 #include <time.h>
 
+//controlla se è vuota
 int skipList_is_empty(SkipList *list){
     return list->head->next[0] == NULL;
 }
-
+//ritorna la size della skiplist
 unsigned int SkipList_size(SkipList *list){
     Node *x = list->head;
     unsigned int k=0;
@@ -14,17 +15,17 @@ unsigned int SkipList_size(SkipList *list){
         k++;
         x = x->next[0];
     }
-    return k - 1; /*-1 perchè non conta head*/
+    return k - 1; /*-1 perchè non bisogna contare head*/
 }
-
-void *list_get(Node *node){ //ritorna l'item contenuto in node
+//ritorna l'item contenuto in node
+void *list_get(Node *node){ 
     if(node == NULL){
         fprintf(stderr, "list_get: node parameter cannot be NULL");
         return NULL;
     }
     return node->item;
 }
-
+//crea una skiplist vuota
 SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
     if(compare == NULL){
         fprintf(stderr, "CreateSkipList: compare parameter cannot be NULL");
@@ -41,7 +42,7 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
     list->compare = compare;
     return list;
 }
-
+//cerca nella skiplist l'elemento I
 void *searchSkipList(SkipList *list, void* I){
     Node *x = list->head;
     unsigned int i=0;
@@ -61,7 +62,7 @@ void *searchSkipList(SkipList *list, void* I){
         return NULL;
     }
 }
-
+//inserisce nella skiplist l'elemento I
 void insertSkipList(SkipList *list, void* I){
     Node *new;
     new = CreateNode(I, randomLevel());
@@ -83,8 +84,8 @@ void insertSkipList(SkipList *list, void* I){
         }
     }
 }
-
-void free_memory(SkipList *list){ //scorre tutta la lista e la libera
+//libera la memoria
+void free_memory(SkipList *list){ 
     if(list == NULL){
         fprintf(stderr, "free_SkipList: SkipList parameter cannot be NULL");
         return;
@@ -92,13 +93,13 @@ void free_memory(SkipList *list){ //scorre tutta la lista e la libera
     Node *corrente = list->head;
     while (corrente != NULL) {
         Node *successivo = corrente->next[0];
-        free(corrente->next); //libera l'array di next
-        free(corrente); //libera il nodo attuale
+        free(corrente->next);   //libera l'array di next
+        free(corrente);         //libera il nodo attuale
         corrente=successivo;
     }
     free(list);
 }
-
+//crea una nodo della skiplist
 Node *CreateNode(void* I, unsigned int randomlevel){
     Node *x;
     x = (Node*) malloc(sizeof(Node));
@@ -110,8 +111,8 @@ Node *CreateNode(void* I, unsigned int randomlevel){
     }
     return x;
 }
-
-unsigned int randomLevel(){ //estraiamo un numero random tra 0 e RAND_MAX e lo dividiamo per RAND_MAX in modo da ottenere un valore compreso tra 0 e 1
+//estrae un numero random tra 0 e RAND_MAX e lo dividiamo per RAND_MAX in modo da ottenere un valore compreso tra 0 e 1
+unsigned int randomLevel(){
     unsigned int lvl = 1;    
     while((double)rand() / (double)RAND_MAX < 0.5 && lvl < MAX_HEIGHT){ 
         lvl = lvl + 1;

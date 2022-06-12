@@ -15,16 +15,15 @@ public class HeapMinimo<T>{
         this.indicesMap = new IdentityHashMap<>();
         this.comparator = comparator;
     }
-
-
+    //controlla se l'array è vuoto
     public boolean isEmpty(){
         return (this.array).isEmpty();
     }
-
+    //ritorna la size dell'array
     public int size(){
         return (this.array).size();
     }
-    
+    //inserimento nell'heap
     public void HeapInsert(T element) throws HeapMinimoException{
         if(element == null)
             throw new HeapMinimoException("insert Element: element parameter cannot be null");
@@ -42,18 +41,18 @@ public class HeapMinimo<T>{
         }
         (this.indicesMap).put(element, index);
     }
-
+    //ritorna l'indice del padre
     private int getParentIndex(int index) throws HeapMinimoException {
         if(index < 0 || index > size())
             throw new HeapMinimoException("Index "+ index +"is out of the array bounds");
         return (index - 1) / 2;
     }
-
+    //ritorna l'elemento padre di element
     public T getParent(T element) throws HeapMinimoException {
         int index = (this.indicesMap).get(element);
         return getElement(getParentIndex(index));
     }
-
+    //ritorna l'indice del figlio sinisto
     public int getLeftIndex(int index) throws HeapMinimoException {
         if(index < 0 || index > size())
             throw new HeapMinimoException("Index " + index + "is out of the array bounds");
@@ -62,7 +61,7 @@ public class HeapMinimo<T>{
         } 
         return index;
     }
-
+    //ritorna l'indice del figlio destro
     public int getRightIndex(int index) throws HeapMinimoException {
         if(index < 0 || index > size())
             throw new HeapMinimoException("Index " + index + "is out of the array bounds");
@@ -71,21 +70,21 @@ public class HeapMinimo<T>{
         } 
         return index;
     }
-
+    //ritorna il figlio sinistro di element
     public T getLeftChild(T element) throws HeapMinimoException {
         if(containsValue(element) == false)
             throw new HeapMinimoException("Element not exists");
         int index = (this.indicesMap).get(element);
         return getElement(getLeftIndex(index));
     }
-   
+    //ritorna il figlio destro di element
     public T getRightChild(T element) throws HeapMinimoException {
         if(containsValue(element) == false )
             throw new HeapMinimoException("Element not exists");
         int index = (this.indicesMap).get(element);
         return getElement(getRightIndex(index));
     }
-
+    //ritorna e rimuove l'elemento piu' piccolo nell'heap
     public T extractMin() throws HeapMinimoException {
         if(isEmpty())
             throw new HeapMinimoException("Heap is empty");
@@ -130,37 +129,22 @@ public class HeapMinimo<T>{
             (this.indicesMap).put(temp,m);
             Heapify(m);
         }
-    } 
-    /*
-    [][]
-    [][]
-    [][]
-    [][]
-    
-    */
-
+    }
+    //ritorna l'elemento in posizione index
     public T getElement(int index) throws HeapMinimoException {
         if(index < 0 || index > size())
             throw new HeapMinimoException("Index "+index+"is out of the array bounds");
         return (this.array).get(index);
     }    
     
-    
+    //diminuisce il valore di un elemento
     public void subtractValue(T oldValue, T newValue) throws HeapMinimoException {
         if((this.comparator).compare(oldValue, newValue) == -1)
             throw new HeapMinimoException("newValue cannot be greater than oldValue");
         int index = (this.indicesMap).get(oldValue);
-        /*System.out.println(indicesMap);
-        System.out.println(index + " " + newValue);
-        System.out.println("oldvalue: " + oldValue);
-        System.out.println((this.indicesMap));
-        System.out.println("prima della set index: " + index);
-        System.out.println("Size array "+(this.array).size());
-        System.out.println(" " + (this.array).get(index) + " " + newValue);*/
         (this.array).set(index, newValue);
-        //System.out.println("dopo la prima set");
-        (this.indicesMap).remove(oldValue); //togliamo dalla Map il vecchio elemento
-        (this.indicesMap).put(newValue, index); //aggiungiamo alla Map il nuovo valore
+        (this.indicesMap).remove(oldValue);                 //togliamo dalla Map il vecchio elemento
+        (this.indicesMap).put(newValue, index);             //aggiungiamo alla Map il nuovo valore
         while (index > 0 && ((this.comparator).compare(getElement(getParentIndex(index)), getElement(index)) == 1)){
             T temp = getElement(getParentIndex(index));
             (this.array).set(getParentIndex(index), getElement(index));
@@ -170,10 +154,8 @@ public class HeapMinimo<T>{
             index = getParentIndex(index);
         }
     }
-    
+    //controlla se indicesmap contiene l'elemento
     public boolean containsValue(T value){
         return (this.indicesMap).containsKey(value);
     }
 }
-
-//https://docs.oracle.com/javase/7/docs/api/java/util/IdentityHashMap.html

@@ -6,58 +6,40 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 
-/*                   
- 
-Milano, Torino, 5125.64
-Milano, Vercelli, 2233.5
-Milano, Roma, 3000.89
-
-[Milano,  null],      [Roma, null]
-|                     |
-[Torino, 5125.64]     [Milano, 3000.89]
-|
-[Vercelli, 2233.5]
-|
-[Roma, 3000.89]
-
-
-[Roma, null]
-*/
-
 public class Grafo<K, T>{
     public ArrayList<LinkedList<Node<T, K>>> listaAdiacenza = null;
     private Hashtable<K, Integer> indecesMap;
     private int mode;//0 = diretto, 1 = indiretto
 
     public Grafo(int mode) throws GrafoException{
-        if(mode == 0 || mode == 1)
-            (this.mode) = mode;
-        else throw new GrafoException("mode deve essere compresa tra 0 e 1");
+        if(mode != 0 && mode != 1)
+            throw new GrafoException("mode deve essere compresa tra 0 e 1");
+
+        (this.mode) = mode;
         listaAdiacenza = new ArrayList<>();
         indecesMap = new Hashtable<>();
     }
-
+    //ritorna se il grafo è diretto o indiretto
     public int getMode(){
         return this.mode;
     }
-    /*idea: accedere alle posizioni di listaAdiacenza con un hashmap per dedurre gli indici dai nomi delle città*/
-    public void addNode(K nameFrom){
+    //aggiunta di un vertice
+    public void addVertex(K nameFrom){
         int indexFrom;
         if((this.indecesMap).containsKey(nameFrom) == false){
             (this.listaAdiacenza).add(new LinkedList<>());
             indexFrom = listaAdiacenza.size() - 1;
             (this.listaAdiacenza).get(indexFrom).add(new Node(null, nameFrom));
             (this.indecesMap).put(nameFrom, indexFrom);
-            //System.out.println(indecesMap);
         } 
     }
-
+    //aggiunta di un arco
     public void addEdge(K nameFrom, K nameTo, T weight) throws GrafoException{
         if((this.indecesMap).containsKey(nameFrom) == false){
-            throw new GrafoException("Nodo partenza inesistente");
+            throw new GrafoException("vertice partenza inesistente");
         }
-        if(containsNode(nameTo) == false){
-            addNode(nameTo);
+        if(containsVertex(nameTo) == false){
+            addVertex(nameTo);
         }
         int indexFrom;
         indexFrom = indecesMap.get(nameFrom);
@@ -68,30 +50,16 @@ public class Grafo<K, T>{
             listaAdiacenza.get(indexFrom).add(new Node(weight, nameFrom));
         }
     }
-
-    public boolean containsNode(K vertex){
+    //controlla se un vertice esiste 
+    public boolean containsVertex(K vertex){
         return (this.indecesMap).containsKey(vertex);
     }
-
-   /* public boolean containsEdge(K vertexFrom, K vertexTo, T weight) throws GrafoException{
-        if (containsNode(vertexFrom) == false)
-            throw new GrafoException("Nodo partenza inesistente");
-        if (containsNode(vertexTo) == false)
-            throw new GrafoException("Nodo arrivo inesistente");
-        int indexFrom = (this.indecesMap).get(vertexFrom);
-        boolean res =  (this.listaAdiacenza).get(indexFrom).contains(new Node(weight, vertexTo));
-        if(mode == 0 && res == false){//grafo indiretto
-            int indexTo = (this.indecesMap).get(vertexTo);
-            res =  (this.listaAdiacenza).get(indexTo).contains(new Node(weight, vertexFrom));
-        }
-        return res;
-    }*/
-
+    //controlla se un arco esiste 
     public boolean containsEdge(K vertexFrom, K vertexTo) throws GrafoException{
-        if (containsNode(vertexFrom) == false)
-            throw new GrafoException("Nodo partenza inesistente");
-        if (containsNode(vertexTo) == false)
-            throw new GrafoException("Nodo arrivo inesistente");
+        if (containsVertex(vertexFrom) == false)
+            throw new GrafoException("Vertice partenza inesistente");
+        if (containsVertex(vertexTo) == false)
+            throw new GrafoException("Vertice arrivo inesistente");
         int indexFrom = (this.indecesMap).get(vertexFrom);
         boolean res =  false;
         for(int i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
@@ -99,48 +67,15 @@ public class Grafo<K, T>{
                 res = true;
             }
         }
-        /*if(mode == 1 && res == false){//grafo indiretto
-            int indexTo = (this.indecesMap).get(vertexTo);
-            for(int i = 0; i < (this.listaAdiacenza).get(indexTo).size(); i++){
-                if((this.listaAdiacenza).get(indexTo).get(i).getName().equals(vertexFrom)){
-                    res = true;
-                }
-            }
-        }*/
         return res;
     }
-    
-    /*TITOLO: Controlliamo veramente se l'arco esiste in quel verso */
+    //rimozione di un arco (se esiste)
     public void removeEdge(K vertexFrom, K vertexTo) throws GrafoException{
         if(containsEdge(vertexFrom, vertexTo) == false)
             throw new GrafoException("arco inesistente");
-        int indexFrom=0, indexEdge=0,i=0;
+        int indexFrom = 0, i = 0;
         boolean flag = false;
         indexFrom = (this.indecesMap).get(vertexFrom);
-        /*if(mode == 1){
-            boolean exist = false;
-            for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size() && !exist; i++){
-                exist = exist || (this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo);
-            }
-            if(!exist){
-                indexFrom = (this.indecesMap).get(vertexTo);
-                for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
-                    if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexFrom)){
-                        break;
-                    }
-                }
-                (this.listaAdiacenza).get(indexFrom).remove(i);
-                flag = true; // ci serve per non entrare nell'if se abbiamo già rimosso l'arco
-            }
-        } 
-        if(flag == false){
-            for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
-                if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
-                    break;
-                }
-            }
-            (this.listaAdiacenza).get(indexFrom).remove(i);
-        }*/
         for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
             if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
                 break;
@@ -157,9 +92,9 @@ public class Grafo<K, T>{
             (this.listaAdiacenza).get(indexTo).remove(i);
         }
     }
-   
+    //rimuoviamo un vertice
     public void removeVertex(K vertex) throws GrafoException{
-        if(containsNode(vertex) == false)
+        if(containsVertex(vertex) == false)
             throw new GrafoException("vertice inesistente");
         int index = (this.indecesMap).get(vertex);
         K vertexTo = null;
@@ -171,11 +106,11 @@ public class Grafo<K, T>{
         (this.listaAdiacenza).remove(index);
         (this.indecesMap).remove(vertex);
     }
-
+    //ritorna il numero di vertici
     public int numVertex(){
         return (this.listaAdiacenza).size();
     }
-
+    //ritorna il numero di archi
     public int numEdge(){
         int countEdge=0;
         for(int i = 0; i < (this.listaAdiacenza).size(); i++){
@@ -186,53 +121,33 @@ public class Grafo<K, T>{
 
         return countEdge;
     }
-
-    public ArrayList<K> getAdj(K vertex) throws GrafoException{ //O(1)
-        if(containsNode(vertex) == false)
+    //ritorna una lista di adiacenti
+    public ArrayList<K> getAdj(K vertex) throws GrafoException{
+        if(containsVertex(vertex) == false)
             throw new GrafoException("vertice inesistente");
         int index = (this.indecesMap).get(vertex);
         ArrayList<K> adj = new ArrayList<>();
         for(int i = 1; i < (this.listaAdiacenza).get(index).size(); i++){
             adj.add((this.listaAdiacenza).get(index).get(i).getName());
         }
-        /*if(mode == 1){
-            for(int j = 0; j < (this.listaAdiacenza).size(); j++){ 
-                for(int k = 1; k < (this.listaAdiacenza).get(j).size(); k++){
-                    if((this.listaAdiacenza).get(j).get(k).getName().equals(vertex)){
-                        adj.add((this.listaAdiacenza).get(j).get(0).getName());
-                    }
-                }
-            }
-        }*/
         return adj;
     }
-    
+    //ritorna il peso di un arco
     public T getLabel(K vertexFrom, K vertexTo) throws GrafoException{
         if (containsEdge(vertexFrom,vertexTo) == false)
             throw new GrafoException("Arco inesistente");
         int i=0;
         int indexFrom = 0;
         T res = null;
-        //boolean flag=false;
         indexFrom = (this.indecesMap).get(vertexFrom);
         for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
             if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexTo)){
                 res = (this.listaAdiacenza).get(indexFrom).get(i).getWeight();
-                //flag = true;
             }
         }
-        /*if(!flag){
-            indexFrom = (this.indecesMap).get(vertexTo);
-            for(i = 0; i < (this.listaAdiacenza).get(indexFrom).size(); i++){
-                if((this.listaAdiacenza).get(indexFrom).get(i).getName().equals(vertexFrom)){
-                    res =  (this.listaAdiacenza).get(indexFrom).get(i).getWeight();
-                }
-            }
-        }*/
         return res;
     }
-
-    //Recupero nodi
+    //Recupero vertici
     public ArrayList<K> getVertices(){
         ArrayList<K> vertices = new ArrayList<>();
         for(int i = 0; i < (this.listaAdiacenza).size(); i++){
@@ -241,7 +156,6 @@ public class Grafo<K, T>{
         return vertices;
     }
     //Recupero archi
-    //idea fare una matrice di ritorno
     public ArrayList< ArrayList<K> > getEdges(){
         ArrayList< ArrayList<K> > vertices = new ArrayList<>();
         ArrayList<K> edge = null;
@@ -255,16 +169,5 @@ public class Grafo<K, T>{
             }
         }
         return vertices;
-    }
-
-    public void printMap(){
-        for(int i = 0; i < listaAdiacenza.size(); i++){
-            LinkedList<Node<T, K>> temp = (this.listaAdiacenza).get(i);
-            for(int j = 0; j < temp.size(); j++){
-                System.out.print(temp.get(j).getName() + " ");
-                System.out.print(temp.get(j).getWeight() + " ");
-            }
-            System.out.println();
-        }
     }
 }

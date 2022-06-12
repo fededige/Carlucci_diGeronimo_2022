@@ -19,9 +19,9 @@ public class Dijkstra<K>{
         this.MinPriorityQueue = new HeapMinimo<>(new VertexComparatorWeightField()); //passare la compare
         this.vertices = new ArrayList<>();
     }
-    
+    //inizializz. della coda a priorità minima e del vettore che conterrà i cammini minimi
     private void insertMPQ(K source) throws HeapMinimoException, DijkstraException{
-        if(grafo.containsNode(source) == false)
+        if(grafo.containsVertex(source) == false)
             throw new DijkstraException("sourse not exists in graph");
         ArrayList<K> tempVertices = grafo.getVertices();
         
@@ -48,7 +48,7 @@ public class Dijkstra<K>{
             currentNode = MinPriorityQueue.extractMin();
             currentWeight = currentNode.getWeight();
             adj = grafo.getAdj(currentNode.getName());
-            for(int i = 0; i < adj.size(); i++){ //aggiugerte la equals in Node
+            for(int i = 0; i < adj.size(); i++){
                 flag=false;
                 for(j = 0; j < MinPriorityQueue.size(); j++){
                     if(MinPriorityQueue.getElement(j).getName().equals(adj.get(i))){

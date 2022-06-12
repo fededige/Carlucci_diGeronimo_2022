@@ -30,7 +30,7 @@ public class DijkstraUsage{
                 CityName departure_city = new CityName(lineElements[0]);
                 CityName arrival_city = new CityName(lineElements[1]);
                 Double distance = Double.parseDouble(lineElements[2]);
-                maps.addNode(departure_city);
+                maps.addVertex(departure_city);
                 maps.addEdge(departure_city, arrival_city, distance);
             }
         }

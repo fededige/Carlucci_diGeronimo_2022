@@ -22,7 +22,7 @@ void Usage(){
     
     exit(1);
 }
-
+//apertura file 
 FILE *open_file(const char *filename, char *m){
     FILE *file = fopen(filename, m);
     if (file == NULL) {
@@ -31,7 +31,7 @@ FILE *open_file(const char *filename, char *m){
     }
     return file;
 }
-
+//scrittura su file dell'array ordinato
 static void print_array(Array *array, FILE *out){
     unsigned long size = array_size(array);
 
@@ -44,7 +44,7 @@ static void print_array(Array *array, FILE *out){
     printf("\nData written\n");
     fclose(out);
 }
-
+//deallocazione dell'array
 static void free_array(Array *array){
     unsigned long size = array_size(array);
     for(unsigned long i = 0; i < size; ++i){
@@ -54,7 +54,7 @@ static void free_array(Array *array){
     }
     array_free_memory(array);
 }
-
+//caricamento da file dell'array
 static void load_array(const char *file_name, Array *array){
     FILE *fp;
     char *line = NULL;
@@ -70,18 +70,17 @@ static void load_array(const char *file_name, Array *array){
             exit(EXIT_FAILURE);
         }
         
-        char *id_in_read_line_p = strtok(line, ",");  //andarsi a vedere come funziona la strtok
+        char *id_in_read_line_p = strtok(line, ",");        //divide la stringa in sottostringhe divise da virgole
         char *field1_in_read_line_p = strtok(NULL, ",");
         char *field2_in_read_line_p = strtok(NULL, ",");
         char *field3_in_read_line_p = strtok(NULL, ",");
 
         
-        record_p->id = atoi(id_in_read_line_p);     //carico nel record l'ID
+        record_p->id = atoi(id_in_read_line_p);             //carico nel record l'ID
         record_p->field2 = atoi(field2_in_read_line_p);     //carico nel record il secondo campo
-        record_p->field3 = atof(field3_in_read_line_p);     //carico nel record il terzo campo DA CONTROLLARE
-
+        record_p->field3 = atof(field3_in_read_line_p);     //carico nel record il terzo campo
     
-        record_p->field1 = malloc((strlen(field1_in_read_line_p)+1) * sizeof(char));    //carico il primo campo nel record
+        record_p->field1 = malloc((strlen(field1_in_read_line_p) + 1) * sizeof(char));    //carico il primo campo nel record
         if(record_p->field1 == NULL){
             fprintf(stderr,"main: unable to allocate memory for the string field of the read record");
             exit(EXIT_FAILURE);
@@ -97,8 +96,6 @@ static void load_array(const char *file_name, Array *array){
 
 static void test_with_comparison_function(const char *file_name, const char *file_name_out, const char *mode, int (*compare)(void*, void*)){
     FILE *out = open_file(file_name_out, "w"); 
-    /*If a file with the same name already exists its contents 
-    are erased and the file is treated as an empty new file.*/
     Array *array = array_create(compare);
     load_array(file_name, array);
     
@@ -120,7 +117,7 @@ static void test_with_comparison_function(const char *file_name, const char *fil
     print_array(array, out);
     free_array(array);
 }
-
+//relazione di precedenza per il campo 3
 static int compare_field3(void *r1_p, void *r2_p){
     if(r1_p == NULL){
         fprintf(stderr, "precedes_string: the first parameter is a null pointer");
@@ -140,7 +137,7 @@ static int compare_field3(void *r1_p, void *r2_p){
     }
     else return 0;
 }
-
+//relazione di precedenza per il campo 2
 static int compare_field2(void *r1_p, void *r2_p){
     if(r1_p == NULL){
         fprintf(stderr, "precedes_string: the first parameter is a null pointer");
@@ -161,6 +158,7 @@ static int compare_field2(void *r1_p, void *r2_p){
     else return 0;
 }
 
+//relazione di precedenza per il campo 1
 static int compare_field1(void *r1_p, void *r2_p){
     int res;
     if(r1_p == NULL){

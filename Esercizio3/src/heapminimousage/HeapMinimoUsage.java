@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class HeapMinimoUsage {
     private static final Charset ENCODING = StandardCharsets.UTF_8;
-
+    
     private static void printHeap(HeapMinimo<Record> heapminimo) throws HeapMinimoException{
         Record currRec = null;
         int sizeHeap;
@@ -31,9 +31,9 @@ public class HeapMinimoUsage {
             }
             System.out.println();
         }
-  } 
-
-    private static void loadArray(String filepath, HeapMinimo<Record> heapminimo, ArrayList<Record> arrayelement)
+    } 
+    //carica l'heap da file
+    private static void loadHeap(String filepath, HeapMinimo<Record> heapminimo, ArrayList<Record> arrayelement)
         throws IOException, HeapMinimoException{
         System.out.println("\nLoading data from file...\n");
 
@@ -53,7 +53,7 @@ public class HeapMinimoUsage {
             throws IOException, HeapMinimoException{
         HeapMinimo<Record> heapminimo = new HeapMinimo<>(comparator);
         ArrayList<Record> arrayelement = new ArrayList<>();
-        loadArray(filepath, heapminimo, arrayelement);
+        loadHeap(filepath, heapminimo, arrayelement);
         printHeap(heapminimo);
                 
         Record res, el;

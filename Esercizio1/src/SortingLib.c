@@ -3,26 +3,15 @@
 #include <time.h>
 #include <stdio.h>
 
-
+//VARIABILE GLOBALE
 int choose_random_pivot = 0;
-
-/*
-APPUNTI:
-Wquicksort e quicksort non devono restituire nulla, non serve neanche restituire NULL 
-perchè non ci sarà mai errore (al massimo fallisce l'ordinamento).
-_Array non deve esserci in sorting_lib (insieme a tutti i metodi che lo gestisono), andrà messo in un'altra libreria che gestisce solo quello
-Siccome non abbiamo più _Array i metodi devono prendere più parametri per size, precedes ecc...
-*/
-
-/*METODI STATICI*/
 
 static unsigned long bi_get_index(void **array, int (*precedes)(void*, void*), unsigned long a, unsigned long b, void *key);
 static void insert_element(void **array, void *element, unsigned long index, unsigned long b);
-
 static void Wquicksort(void **array, long p, long r, int (*precedes)(void*, void*));
 static long partition(void **array, long p, long r, int (*precedes)(void*, void*));
 static void swap_val(void **array, long a, long b);
-/*static int conta=0;*/
+
 
 void bi_insertion_sort(void **array, unsigned long size, int (*precedes)(void*, void*)){ 
     unsigned long i, index = 0;
@@ -75,7 +64,7 @@ static void Wquicksort(void **array, long p, long r, int (*precedes)(void*, void
     long q;
     if(r - p >= 1){
         q = partition(array, p, r, precedes);
-        if(q > p){/*q > 1*/
+        if(q > p){
             Wquicksort(array, p, q - 1, precedes);
         }
         if(q < r){
@@ -92,15 +81,15 @@ static long partition(void **array, long p, long r, int (*precedes)(void*, void*
 
     while(i <= j){
         int risultato=precedes(array[i],array[p]);
-        if(risultato == -1 || risultato == 0){//A[i] <= A[p] /cambiato/
+        if(risultato == -1 || risultato == 0){//A[i] <= A[p] 
             i++;
         }
         else{
-            if(precedes(array[j], array[p]) == 1){//A[j] > A[p] /cambiato/
+            if(precedes(array[j], array[p]) == 1){//A[j] > A[p]
                 j--;
             }
             else{
-                swap_val(array, i, j); // verificare j o j - 1 cambiato
+                swap_val(array, i, j); 
                 i++;
                 j--;
             }
@@ -109,7 +98,6 @@ static long partition(void **array, long p, long r, int (*precedes)(void*, void*
     swap_val(array, p, j);
     return j;
 }
-
 
 static void swap_val(void **array,  long a,  long b){
     if(array == NULL)

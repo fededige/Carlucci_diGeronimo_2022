@@ -9,7 +9,7 @@
 typedef struct _record{
     char *word;
 } Record;
-
+//apertura del file
 FILE *open_file(const char *filename, char *m){
     FILE *file = fopen(filename, m);
     if (file == NULL){
@@ -18,7 +18,7 @@ FILE *open_file(const char *filename, char *m){
     }
     return file;
 }
-
+//caricamento della skiplist da file
 static void load_SkipList(const char *dictionary, SkipList *list){
     FILE *fp;
     char *line = NULL;
@@ -60,6 +60,7 @@ void Usage(){
   exit(1);
 }
 
+//liberiamo la memoria
 void free_SkipList(SkipList *list){
     if (list == NULL){
         return;
@@ -69,7 +70,7 @@ void free_SkipList(SkipList *list){
         free_memory(list);
         return;
     }
-    while (node != NULL){ //libera tutti gli item
+    while (node != NULL){
         Record *element = (Record *)list_get(node);
         node = node->next[0];
         free(element->word);
@@ -88,19 +89,19 @@ void correct_text_with_dictionary(const char *dictionary, const char *file_name,
     SkipList *list = CreateSkipList(compare);
     load_SkipList(dictionary, list);
     
-    while(ch != -1){ //leggiamo carattere per carattere tutte le parole del testo e le cerchiamo una ad una
+    while(ch != -1){                            //leggiamo carattere per carattere tutte le parole del testo e le cerchiamo una ad una
         ch = (char) fgetc(fp);
         str = (char *) calloc(1, sizeof(char)); //inizializzia la stringa 0 (è richiesto da strncat)
-        flag = 0; //il flag serve per segnalare se in str c'è una parola oppure punteggiatura, spazi ecc. 
+        flag = 0;                               //il flag serve per segnalare se in str c'è una parola oppure punteggiatura, spazi ecc. 
         while((ch >= 'A' && ch <='Z') || (ch >= 'a' && ch <= 'z')){
-            if((ch >= 'A' && ch <='Z')){ //tutte le lettere vengono rese minuscole perché nel dizionario non sono presenti maiuscole
-                //ch = (char) ch + 32; //32 è l'offest tra le lettere maiuscole e le lettere minuscole, non funziona a causa di -Wconversion
+            if((ch >= 'A' && ch <='Z')){        //tutte le lettere vengono rese minuscole perché nel dizionario non sono presenti maiuscole
+                //ch = (char) ch + 32;          //32 è l'offest tra le lettere maiuscole e le lettere minuscole, non funziona a causa di -Wconversion
                 ch = (char) tolower(ch);
             }
             flag = 1;
             str = realloc(str, strlen(str) + sizeof(char) +1); //reallochiamo la lunghezza della stringa per permetere di accogliere il prossimo carattere
-            str = strncat(str, &ch, 1); //aggiungiamo il carattere appena letto alla stringa
-            ch = (char) fgetc(fp); //leggiamo il prossimo carattere
+            str = strncat(str, &ch, 1);          //aggiungiamo il carattere appena letto alla stringa
+            ch = (char) fgetc(fp);               //leggiamo il prossimo carattere
         }
         if(flag==1){
             Record *serched_el = malloc(sizeof(Record));
@@ -118,7 +119,7 @@ void correct_text_with_dictionary(const char *dictionary, const char *file_name,
             strcpy(serched_el->word, str);
             
             if(searchSkipList(list, serched_el) == NULL){
-                printf("%s\n",serched_el->word); //se non la parola non è presente allora la stampa a stdout
+                printf("%s\n",serched_el->word); //stampa le parole non presenti a stdout
             }
             free(serched_el->word);
             free(serched_el);
@@ -128,7 +129,7 @@ void correct_text_with_dictionary(const char *dictionary, const char *file_name,
     fclose(fp);
     free_SkipList(list);
 }
-
+//relazione di precedenza  
 static int compare(void *r1_p, void *r2_p){
     if (r1_p == NULL){
         fprintf(stderr, "precedes_string: the first parameter is a null pointer");
