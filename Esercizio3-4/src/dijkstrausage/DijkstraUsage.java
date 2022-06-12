@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 import java.lang.Math;
 import java.util.ArrayList;
-
+import dijkstra.DijkstraException;
 
 public class DijkstraUsage{
     private static final Charset ENCODING = StandardCharsets.UTF_8;
@@ -30,7 +30,6 @@ public class DijkstraUsage{
                 CityName departure_city = new CityName(lineElements[0]);
                 CityName arrival_city = new CityName(lineElements[1]);
                 Double distance = Double.parseDouble(lineElements[2]);
-                //System.out.println(lineElements[0] + " " + lineElements[1] + " " + lineElements[2]);
                 maps.addNode(departure_city);
                 maps.addEdge(departure_city, arrival_city, distance);
             }
@@ -38,7 +37,7 @@ public class DijkstraUsage{
         System.out.println("\nData loaded\n");
     }
 
-    private static void testFunction(String filepath) throws IOException, HeapMinimoException, GrafoException{
+    private static void testFunction(String filepath) throws IOException, HeapMinimoException, GrafoException, DijkstraException{
         Grafo<CityName, Double> maps = new Grafo<>(1);
         ArrayList<CityName> adj = new ArrayList<>();
         loadMap(filepath, maps);
@@ -61,12 +60,14 @@ public class DijkstraUsage{
         System.out.println(shortestpath);
     }
 
-    public static void main(String[] args) throws IOException, HeapMinimoException, GrafoException, Exception {
+    public static void main(String[] args) throws IOException, HeapMinimoException, GrafoException, DijkstraException, Exception {
         if(args.length < 1)
             throw new Exception("Usage: DijkstraUsage <file_name>");
 
         testFunction(args[0]);
     }
 }
-// java -jar ./build/Dijkstra.jar /home/federico/Documents/es4_dataset/graph_prova.csv
+// java -jar ./build/Dijkstra.jar /home/federico/Documents/es4_dataset/italian_dist_graph.csv
+
+
 

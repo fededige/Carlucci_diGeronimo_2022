@@ -1,2 +1,8 @@
-import dijkstrausage.Vertex;
-import dijkstrausage.VertexComparatorWeightField;
+package dijkstra;
+
+
+public class DijkstraException extends Exception{
+  public DijkstraException(String message){
+    super(message);
+  }
+}
