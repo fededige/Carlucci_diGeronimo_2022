@@ -31,7 +31,8 @@ SkipList *CreateSkipList(int (*compare) (void *a, void *b)){
         fprintf(stderr, "CreateSkipList: compare parameter cannot be NULL");
         return NULL;
     }
-
+    long int seed = time(NULL);
+    srand((unsigned int) seed);
     SkipList *list = (SkipList*) malloc(sizeof(SkipList));
     if(list == NULL){
         fprintf(stderr, "CreateSkipList: unable to allocate memory for the SkipList");
