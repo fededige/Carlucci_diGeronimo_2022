@@ -106,10 +106,10 @@ static void test_with_comparison_function(const char *file_name, const char *fil
   load_array(file_name, array);
 
   if(strcmp(mode, "rand_quicksort") == 0){
-    array = quicksort(array, 0);
+    quicksort(array->array, 0, array->size, array->precedes);
   }
   else if(strcmp(mode, "std_quicksort") == 0){
-    array = quicksort(array, 1);
+    quicksort(array->array, 1, array->size, array->precedes);
   }
   else if(strcmp(mode, "bi_insertionsort") == 0){
     /*array = bi_insertion_sort(array); bi_insertion_sort(array->array, array->size, array->precedes)*/

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../lib/unity.h"
 #include "sorting_lib.h"
+#include "DynamicArray_lib.h"
 
 // precedence relation used in tests
 static int precedes_int(void *i1_p, void *i2_p) {
@@ -60,7 +61,7 @@ static void test_array_bi_srt_one_el() {
   int i1 = -12;
   Array *array = array_create(precedes_int);
   array_insert(array, &i1);
-  bi_insertion_sort(array);
+  bi_insertion_sort(array->array, array->size, precedes_int);
   TEST_ASSERT_EQUAL_PTR(&i1, array_get(array, 0));
   array_free_memory(array);
 }
@@ -77,7 +78,7 @@ static void test_array_bi_srt_three_el() {
   array_insert(array, &i3);
   array_insert(array, &i1);
 
-  bi_insertion_sort(array);
+  bi_insertion_sort(array->array, array->size, precedes_int);
 
   int **act_arr = malloc(3*sizeof(int*));
   for (unsigned long i=0; i < 3; ++i) {
@@ -92,7 +93,7 @@ static void test_array_rnd_qck_one_el() {
   int i1 = -12;
   Array *array = array_create(precedes_int);
   array_insert(array, &i1);
-  quicksort(array, 0);
+  quicksort(array->array, 0, array->size, precedes_int);
   TEST_ASSERT_EQUAL_PTR(&i1, array_get(array, 0));
   array_free_memory(array);
 }
@@ -109,7 +110,7 @@ static void test_array_rnd_qck_three_el() {
   array_insert(array, &i3);
   array_insert(array, &i1);
 
-  quicksort(array, 0);
+  quicksort(array->array, 0, array->size, precedes_int);
 
   int **act_arr = malloc(3*sizeof(int*));
   for (unsigned long i=0; i < 3; ++i) {
@@ -125,7 +126,7 @@ static void test_array_qck_one_el() {
   int i1 = -12;
   Array *array = array_create(precedes_int);
   array_insert(array, &i1);
-  quicksort(array, 1);
+  quicksort(array->array, 1, array->size, precedes_int);
   TEST_ASSERT_EQUAL_PTR(&i1, array_get(array, 0));
   array_free_memory(array);
 }
@@ -142,7 +143,7 @@ static void test_array_qck_three_el() {
   array_insert(array, &i3);
   array_insert(array, &i1);
 
-  quicksort(array, 1);
+  quicksort(array->array, 1, array->size, precedes_int);
 
   int **act_arr = malloc(3*sizeof(int*));
   for (unsigned long i=0; i < 3; ++i) {
@@ -155,19 +156,19 @@ static void test_array_qck_three_el() {
 
 static void test_array_qck_zero_el() {
   Array *array = array_create(precedes_int);
-  quicksort(array, 1);
+  quicksort(array->array, 1, array->size, precedes_int);
   TEST_ASSERT_TRUE(array_is_empty(array));
   array_free_memory(array);
 }
 static void test_array_rnd_qck_zero_el() {
   Array *array = array_create(precedes_int);
-  quicksort(array, 0);
+  quicksort(array->array, 0, array->size, precedes_int);
   TEST_ASSERT_TRUE(array_is_empty(array));
   array_free_memory(array);
 }
 static void test_array_bi_srt_zero_el() {
   Array *array = array_create(precedes_int);
-  quicksort(array, 1);
+  quicksort(array->array, 1, array->size, precedes_int);
   TEST_ASSERT_TRUE(array_is_empty(array));
   array_free_memory(array);
 }
