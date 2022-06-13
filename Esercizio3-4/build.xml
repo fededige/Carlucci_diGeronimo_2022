@@ -56,6 +56,13 @@
             <attribute name="Class-Path" value="${classpath}"/>
           </manifest>
         </jar>
+        <jar destfile="build/HeapMinimoTests.jar" basedir="${classes.dir}">
+          <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+          <manifest>
+            <attribute name="Main-Class" value="heapminimo/HeapMinimo_TestsRunner"/>
+            <attribute name="Class-Path" value="${classpath}"/>
+          </manifest>
+        </jar>
     </target>
 
     <target depends="clean,init,compile,jar,junit" name="all" />
